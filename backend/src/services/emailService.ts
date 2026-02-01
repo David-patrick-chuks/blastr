@@ -14,22 +14,7 @@ class EmailServiceClass {
     private transporter: nodemailer.Transporter | null = null;
 
     constructor() {
-        if (env.SMTP_USER && env.SMTP_PASS) {
-            const host = env.SMTP_HOST || 'smtp.gmail.com';
-            const port = parseInt(env.SMTP_PORT || '587');
-            this.transporter = nodemailer.createTransport({
-                host,
-                port,
-                secure: port === 465,
-                auth: {
-                    user: env.SMTP_USER,
-                    pass: env.SMTP_PASS,
-                },
-            });
-            logger.info(`Email service initialized with ${host}`);
-        } else {
-            logger.warn('Email service NOT initialized: SMTP_USER or SMTP_PASS missing');
-        }
+        logger.info('Email service initialized (agent-based SMTP)');
     }
 
     createTransporter(config: { host: string; port: number; user: string; pass: string }) {
@@ -57,13 +42,13 @@ class EmailServiceClass {
 
     async sendEmail(options: EmailOptions, config?: { host: string; port: number; user: string; pass: string }): Promise<boolean> {
         const transporter = config ? this.createTransporter(config) : this.transporter;
-        
+
         if (!transporter) {
             logger.error('Cannot send email: Transporter not initialized');
             return false;
         }
 
-        const fromUser = config?.user || env.SMTP_USER || 'no-reply@blastagent.ai';
+        const fromUser = config?.user || 'no-reply@blastagent.ai';
 
         try {
             const info = await transporter.sendMail({

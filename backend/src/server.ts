@@ -3,6 +3,7 @@ import cors from 'cors';
 import { env } from './config/env.js';
 import aiRoutes from './routes/aiRoutes.js';
 import agentRoutes from './routes/agentRoutes.js';
+import campaignRoutes from './routes/campaignRoutes.js';
 import documentRoutes from './routes/documentRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
@@ -27,8 +28,9 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/agents', authenticate as any, agentRoutes);
+app.use('/api/campaigns', authenticate as any, campaignRoutes);
 app.use('/api/documents', authenticate as any, documentRoutes);
-app.use('/api/stats', analyticsRoutes); // System stats might stay public or have separate auth
+app.use('/api/stats', analyticsRoutes);
 app.use('/api/settings', settingsRoutes);
 
 app.get('/health', (req, res) => {
