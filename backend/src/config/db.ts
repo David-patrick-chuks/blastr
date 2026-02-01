@@ -4,7 +4,7 @@ import { logger } from '../utils/logger.js';
 
 const { Pool } = pg;
 
-import parse from 'pg-connection-string';
+import { parse } from 'pg-connection-string';
 
 if (!env.DATABASE_URL) {
     logger.error('ERROR: DATABASE_URL is missing from .env configuration!');
