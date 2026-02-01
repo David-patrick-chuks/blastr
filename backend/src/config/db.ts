@@ -11,18 +11,39 @@ if (!env.DATABASE_URL) {
     throw new Error('DATABASE_URL is missing');
 }
 
+// Log identifying info (safely)
+const maskedUrl = env.DATABASE_URL.replace(/:([^@]+)@/, ':****@');
+logger.info(`Initializing DB Pool with URL: ${maskedUrl}`);
+
 let dbConfig: any;
 try {
-    dbConfig = parse(env.DATABASE_URL);
-    logger.info(`Database config parsed successfully. Host: ${dbConfig.host}`);
+    // Parse the URL once to get an object
+    const parsed = parse(env.DATABASE_URL);
+    
+    // Explicitly construct the config to avoid hidden properties and ensure types
+    dbConfig = {
+        user: parsed.user || undefined,
+        password: parsed.password || undefined,
+        host: parsed.host || undefined,
+        port: parsed.port ? parseInt(parsed.port, 10) : 5432,
+        database: parsed.database || undefined,
+    };
+    
+    logger.info(`Database config extracted. Host: ${dbConfig.host}, Port: ${dbConfig.port}, User: ${dbConfig.user}`);
 } catch (err: any) {
     logger.error(`Failed to parse DATABASE_URL: ${err.message}`);
     throw err;
 }
 
 export const pool = new Pool({
-    ...dbConfig,
-    ssl: process.env.NODE_ENV === 'production' || env.DATABASE_URL.includes('supabase.com') ? {
+    user: dbConfig.user,
+    password: dbConfig.password,
+    host: dbConfig.host,
+    port: dbConfig.port,
+    database: dbConfig.database,
+    ssl: process.env.NODE_ENV === 'production' || 
+         env.DATABASE_URL.includes('supabase.com') || 
+         env.DATABASE_URL.includes('pooler.supabase.com') ? {
         rejectUnauthorized: false
     } : false,
     max: 20,
