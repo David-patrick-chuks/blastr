@@ -11,29 +11,29 @@ export function Hero({ onAuth }: { onAuth: () => void }) {
         <div className="flex justify-center mb-8">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 border border-zinc-700 bg-zinc-900/80 text-sm text-zinc-300">
             <span className="w-1.5 h-1.5 bg-blue-400 animate-pulse" />
-            GAIA Platform
+            BlastAgent AI
           </span>
         </div>
 
         <h1 className="text-5xl md:text-7xl font-bold text-center tracking-tighter leading-[1.1]">
-          <span className="text-white">Build your Own </span>
+          <span className="text-white">Blast High-Impact </span>
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-            Custom AI
+            AI Email
           </span>
           <br />
-          <span className="text-white">Workforce</span>
+          <span className="text-white">Campaigns</span>
         </h1>
 
         <p className="mt-6 text-lg text-zinc-500 text-center max-w-3xl mx-auto font-mono uppercase tracking-[0.2em]">
-          PERSONAL ASSISTANTS // BUSINESS AUTOMATION // INTELLIGENT AGENTS
+          SMTP DELIVERY // LIST EXTRACTION // PERSONALIZED OUTREACH
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
             onClick={onAuth}
-            className="px-8 py-4 bg-blue-500 hover:bg-blue-400 text-black font-mono text-xs font-black transition-all hover:scale-105 uppercase cursor-pointer shadow-[0_0_20px_rgba(16,185,129,0.2)]"
+            className="px-8 py-4 bg-blue-500 hover:bg-blue-400 text-black font-mono text-xs font-black transition-all hover:scale-105 uppercase cursor-pointer shadow-[0_0_20px_rgba(59,130,246,0.2)]"
           >
-            Start Building
+            Start Blasting
           </button>
           <a
             href="#features"
@@ -54,9 +54,9 @@ export function Hero({ onAuth }: { onAuth: () => void }) {
 
         <div className="mt-20 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
-            { label: "CREATE", detail: "Define Personality" },
-            { label: "TRAIN", detail: "Upload Knowledge" },
-            { label: "DEPLOY", detail: "Connect to Apps" }
+            { label: "CREATE", detail: "Email Templates" },
+            { label: "EXTRACT", detail: "Verify Recipient Lists" },
+            { label: "BLAST", detail: "High-Volume Delivery" }
           ].map((stat) => (
             <div key={stat.label} className="p-6 border border-zinc-800 bg-zinc-900/40 backdrop-blur text-center space-y-2">
               <div className="text-xs font-mono text-zinc-500 uppercase tracking-widest">{stat.label}</div>

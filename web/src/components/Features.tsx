@@ -10,39 +10,39 @@ import {
 const features = [
   {
     icon: Bot,
-    title: "Smart Personality",
+    title: "AI Personalization",
     description:
-      "Beyond simple chat. Build experts that think, plan, and execute across your digital life with Gemini 3 Pro.",
+      "Beyond generic templates. BlastAgent AI crafts unique, personalized emails for every recipient using Gemini 2.0 Flash.",
   },
   {
     icon: Zap,
-    title: "Brain Sync",
+    title: "Instant Extraction",
     description:
-      "Feed your agent any document, video, or website. GAIA learns and indexes your knowledge in seconds.",
+      "Upload screenshots of handles or lists. Our Vision engine extracts and prepares email addresses in seconds.",
   },
   {
     icon: Globe,
-    title: "Connect to Apps",
+    title: "SMTP Deliverability",
     description:
-      "Deploy your agent to WhatsApp, Telegram, or Slack. Talk to your personal assistant wherever you are.",
+      "Connect your own SMTP or Gmail credentials. High-speed, high-deliverability email blasting without middlemen.",
   },
   {
     icon: Cpu,
-    title: "Smart Search",
+    title: "Smart De-duping",
     description:
-      "Leverage advanced search that finds exactly what you need from your own private knowledge base.",
+      "Clean your lists automatically. Advanced AI detection removes duplicates and invalid formatting before every transmission.",
   },
   {
     icon: MessageSquare,
-    title: "Live Studio",
+    title: "Template Studio",
     description:
-      "Fine-tune your agent's personality in real-time with an intuitive, interactive chat interface.",
+      "Iterate on your campaign messaging in real-time with an interactive preview and AI composition assistant.",
   },
   {
     icon: Shield,
-    title: "Privacy First",
+    title: "Secure Operations",
     description:
-      "Your data is strictly yours. Isolated, encrypted, and private by design. No compromises on security.",
+      "Your recipient lists and credentials stay private. Encrypted storage and isolated campaign execution by design.",
   },
 ];
 
@@ -54,10 +54,10 @@ export function Features() {
       <div className="relative max-w-5xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white">
-            Everything you need to build your AI workforce
+            High-Performance Email Orchestration
           </h2>
           <p className="mt-4 text-lg text-zinc-400 max-w-2xl mx-auto">
-            GAIA is built to be powerful yet simple. Create agents that understand your world.
+            BlastAgent AI is engineered for speed and precision. Scale your outreach with intelligent automation.
           </p>
         </div>
 

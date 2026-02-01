@@ -9,16 +9,16 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 border border-blue-500 flex items-center justify-center text-blue-400 font-mono text-sm">
-              G
+              B
             </div>
             <span className="text-xl font-semibold text-white font-mono">
-              gaia
+              blastagent
             </span>
           </div>
 
           <div className="flex items-center gap-2">
             <a
-              href="https://github.com/gaia-platform"
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:border-blue-500/50 transition-colors"
@@ -26,7 +26,7 @@ export function Footer() {
               <SiGithub className="w-4 h-4" />
             </a>
             <a
-              href="https://npmjs.com/package/@gaia/cli"
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:border-blue-500/50 transition-colors"
@@ -38,7 +38,7 @@ export function Footer() {
 
         <div className="mt-8 pt-8 border-t border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-zinc-600">
           <p className="font-mono">
-            © {new Date().getFullYear()} GAIA — Gemini Autonomous Agent Platform
+            © {new Date().getFullYear()} BLASTAGENT — High-Impact AI Emailing
           </p>
           <p>
             Built for those who build the future

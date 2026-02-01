@@ -1,33 +1,29 @@
 const steps = [
   {
     number: "01",
-    title: "Define your AI Expert",
+    title: "Define your Campaign",
     description:
-      "Give your agent a name, a role, and a unique personality. Instruct it exactly how you want it to behave and handle complex tasks.",
-    code: `/* Setting up your Agent */
-agent.identity = "Research Specialist";
-agent.tone = "Professional & Concise";
-agent.goal = "Analyze market trends";`,
+      "Set your campaign goals, subject lines, and drafting templates. BlastAgent AI uses these to craft perfectly tuned, personalized messages.",
+    code: `/* Initializing Campaign */
+campaign.id = "q1_reachout";
+campaign.subject = "Exclusive Update";
+campaign.template = "Hi {{name}}...";`,
   },
   {
     number: "02",
-    title: "Feed it Knowledge",
+    title: "Extract Recipients",
     description:
-      "Upload documents, research links, or videos. Your agent learns from your private data to provide expert, citation-backed answers in seconds.",
-    code: `// Processing your knowledge base
-- research_data.pdf [COMPLETED]
-- youtube_video_link [COMPLETED]
-- business_website.com [COMPLETED]`,
+      "Upload image lists or screenshots. Our AI Vision engine identifies email addresses, verifies formats, and appends them to your targeted campaigns.",
   },
   {
     number: "03",
-    title: "Deploy Everywhere",
+    title: "Blast High-Volume",
     description:
-      "Instantly connect your agent to WhatsApp, Slack, or Telegram. Talk to your AI workforce across all your favorite platforms anywhere in the world.",
-    code: `// Connecting to your life
-Syncing with WhatsApp... OK
-Linking to Slack... OK
-Broadcasting to Telegram... OK`,
+      "Connect your SMTP and launch. Track delivered messages, open rates, and response metrics in real-time through the BlastAgent dashboard.",
+    code: `// Initializing SMTP Transmission
+connecting_host: "smtp.gmail.com"
+status: "BLASTING" [3,248 SENT]
+delivery_rate: 99.8%`,
   },
 ];
 
@@ -39,10 +35,10 @@ export function HowItWorks() {
       <div className="max-w-5xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white">
-            From Idea to Autonomous System
+            The Ultimate Email Pipeline
           </h2>
           <p className="mt-4 text-lg text-zinc-400 max-w-2xl mx-auto">
-            The simplest way to orchestrate Gemini-powered agents across your digital life.
+            The simplest way to orchestrate high-volume, Gemini-powered outreach.
           </p>
         </div>
 
@@ -78,7 +74,7 @@ export function HowItWorks() {
                 <div className="border border-zinc-800 bg-zinc-950">
                   <div className="flex items-center justify-between px-4 py-2 bg-zinc-900 border-b border-zinc-800">
                     <span className="text-xs text-zinc-600 font-mono">
-                      GAIA_PLATFORM
+                      BLASTAGENT_AI
                     </span>
                     <div className="flex gap-2">
                       <div className="w-2 h-2 bg-zinc-700" />
