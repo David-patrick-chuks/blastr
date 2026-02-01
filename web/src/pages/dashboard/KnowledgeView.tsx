@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Upload, FileText, Trash2, Search, Database, Eraser } from "lucide-react";
 import { InfoModal, ConfirmModal } from "../../components/Modal";
-import { agentService, knowledgeService } from "../../services/index";
-import type { Agent, Document } from "../../types/index";
+import { campaignService, knowledgeService } from "../../services/index";
+import type { Campaign, Document } from "../../types/index";
 
 export function KnowledgeView() {
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -13,8 +13,8 @@ export function KnowledgeView() {
     const [youtubeUrl, setYoutubeUrl] = useState("");
     const [websiteUrl, setWebsiteUrl] = useState("");
 
-    const [agents, setAgents] = useState<Agent[]>([]);
-    const [selectedAgentId, setSelectedAgentId] = useState<string>("");
+    const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+    const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
     const [documents, setDocuments] = useState<Document[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [loading, setLoading] = useState(false);
@@ -30,20 +30,20 @@ export function KnowledgeView() {
         }
     }, [selectedAgentId]);
 
-    const loadAgents = async () => {
+    const loadCampaigns = async () => {
         try {
-            const data = await agentService.fetchAgents();
-            setAgents(data);
-            if (data.length > 0) setSelectedAgentId(data[0].id);
+            const data = await campaignService.fetchCampaigns();
+            setCampaigns(data);
+            if (data.length > 0) setSelectedCampaignId(data[0].id);
         } catch (error) {
-            console.error("Failed to load agents:", error);
+            console.error("Failed to load campaigns:", error);
         }
     };
 
     const loadDocuments = async () => {
         setLoading(true);
         try {
-            const data = await knowledgeService.fetchDocuments(selectedAgentId);
+            const data = await knowledgeService.fetchDocuments(selectedCampaignId);
             setDocuments(data);
         } catch (error) {
             console.error("Failed to load documents:", error);
@@ -64,11 +64,11 @@ export function KnowledgeView() {
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (!file || !selectedAgentId) return;
+        if (!file || !selectedCampaignId) return;
 
         setLoading(true);
         try {
-            await knowledgeService.uploadDocument(selectedAgentId, file);
+            await knowledgeService.uploadDocument(selectedCampaignId, file);
             showInfo("Success", "Document uploaded and indexed successfully.");
             loadDocuments();
         } catch (error) {
@@ -89,10 +89,10 @@ export function KnowledgeView() {
     };
 
     const handleClearKnowledge = async () => {
-        if (!selectedAgentId) return;
+        if (!selectedCampaignId) return;
         setLoading(true);
         try {
-            await knowledgeService.clearAgentKnowledge(selectedAgentId);
+            await knowledgeService.clearAgentKnowledge(selectedCampaignId);
             setDocuments([]);
             showInfo("Knowledge Cleared", "All documents have been removed for this agent.");
         } catch (error) {
@@ -108,10 +108,10 @@ export function KnowledgeView() {
     );
 
     const handleYoutubeTrain = async () => {
-        if (!youtubeUrl || !selectedAgentId) return;
+        if (!youtubeUrl || !selectedCampaignId) return;
         setLoading(true);
         try {
-            await knowledgeService.trainFromYoutube(selectedAgentId, youtubeUrl);
+            await knowledgeService.trainFromYoutube(selectedCampaignId, youtubeUrl);
             showInfo("Success", "YouTube video processed and indexed successfully.");
             setYoutubeUrl("");
             loadDocuments();
@@ -123,10 +123,10 @@ export function KnowledgeView() {
     };
 
     const handleWebsiteCrawl = async () => {
-        if (!websiteUrl || !selectedAgentId) return;
+        if (!websiteUrl || !selectedCampaignId) return;
         setLoading(true);
         try {
-            await knowledgeService.crawlWebsite(selectedAgentId, websiteUrl);
+            await knowledgeService.crawlWebsite(selectedCampaignId, websiteUrl);
             showInfo("Success", "Website content crawled and indexed successfully.");
             setWebsiteUrl("");
             loadDocuments();
@@ -147,7 +147,7 @@ export function KnowledgeView() {
                             <p className="text-zinc-500 text-sm">Manage the documents your agents use for context.</p>
                         </div>
                         <select
-                            value={selectedAgentId}
+                            value={selectedCampaignId}
                             onChange={(e) => setSelectedAgentId(e.target.value)}
                             className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs py-2 px-3 outline-none focus:border-blue-500/50 transition-colors"
                         >
@@ -163,7 +163,7 @@ export function KnowledgeView() {
                             accept=".txt,.pdf,.docx,.doc,.csv,.mp3,.wav,.m4a,.ogg"
                         />
                         <button
-                            disabled={loading || !selectedAgentId}
+                            disabled={loading || !selectedCampaignId}
                             onClick={handleUploadClick}
                             className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-400 text-zinc-900 font-bold text-sm transition-colors cursor-pointer disabled:opacity-50"
                         >
@@ -171,7 +171,7 @@ export function KnowledgeView() {
                             {loading ? 'PROCESSING...' : 'UPLOAD DOCUMENT'}
                         </button>
                         <button
-                            disabled={loading || !selectedAgentId || documents.length === 0}
+                            disabled={loading || !selectedCampaignId || documents.length === 0}
                             onClick={() => setClearConfirmOpen(true)}
                             className="flex items-center gap-2 px-4 py-2 border border-red-500/50 text-red-500 hover:bg-red-500/5 font-bold text-sm transition-colors cursor-pointer disabled:opacity-50"
                             title="Wipe everything"

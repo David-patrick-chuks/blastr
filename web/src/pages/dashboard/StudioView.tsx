@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Send, User, Sparkles, ChevronDown, FileText } from "lucide-react";
-import { agentService, authService } from "../../services/index";
+import { campaignService, authService } from "../../services/index";
 import { useSocket } from "../../hooks/useSocket";
 import type { Campaign, ChatMessage } from "../../types/index";
 
@@ -78,7 +78,7 @@ export function StudioView() {
 
     const loadCampaigns = async () => {
         try {
-            const data = await agentService.fetchAgents() as Campaign[];
+            const data = await campaignService.fetchCampaigns() as Campaign[];
             setCampaigns(data);
             if (data.length > 0) {
                 const first = data[0];
@@ -112,7 +112,7 @@ export function StudioView() {
         if (!selectedCampaign) return;
         setSavingInstructions(true);
         try {
-            const updated = await agentService.updateAgent(selectedCampaign.id, {
+            const updated = await campaignService.updateCampaign(selectedCampaign.id, {
                 ...selectedCampaign,
                 system_instruction: editableInstructions
             }) as Campaign;
