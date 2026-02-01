@@ -1,0 +1,136 @@
+import { Activity, Bot, Users } from "lucide-react";
+import { useEffect, useState } from "react";
+import { analyticsService } from "../../services/index";
+import type { SystemOverview, ActivityLog } from "../../services/index";
+
+export function OverviewView() {
+    const [overview, setOverview] = useState<SystemOverview | null>(null);
+    const [activities, setActivities] = useState<ActivityLog[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                const [ov, logs] = await Promise.all([
+                    analyticsService.getSystemOverview(),
+                    analyticsService.getActivityLogs()
+                ]);
+                setOverview(ov);
+                setActivities(logs);
+            } catch (error) {
+                console.error("Failed to load overview data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadData();
+    }, []);
+
+    if (loading) return <div className="p-8 font-mono text-zinc-500">Loading system metrics...</div>;
+
+    return (
+        <div className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <StatCard
+                    icon={Activity}
+                    label="TOTAL TRANSMISSIONS"
+                    value={overview?.totalRequests.toLocaleString() || "0"}
+                    change="+12% DELIVERABILITY"
+                />
+                <StatCard
+                    icon={Activity}
+                    label="ENGINE STATUS"
+                    value={overview?.systemHealth || "N/A"}
+                    change={`${overview?.totalAgents} ACTIVE CAMPAIGNS`}
+                    changeColor="text-blue-400"
+                />
+                <StatCard
+                    icon={Users}
+                    label="RECIPIENTS INDEXED"
+                    value={overview?.totalDocuments || "0"}
+                    change="VERIFIED ENTRIES"
+                    changeColor="text-zinc-500"
+                />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="border border-zinc-800 bg-zinc-900/40 p-6 min-h-[400px]">
+                    <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-sm font-mono text-zinc-500 uppercase tracking-widest">Recent Activity</h3>
+                        <div className="px-2 py-0.5 border border-blue-500/20 text-[10px] text-blue-500 font-mono">LIVE</div>
+                    </div>
+                    <div className="space-y-4">
+                        {activities.length === 0 ? (
+                            <div className="py-20 text-center text-zinc-600 font-mono text-xs italic">No activity recorded yet...</div>
+                        ) : (
+                            activities.map((log, i) => (
+                                <ActivityItem
+                                    key={i}
+                                    title={log.agent_name || "System"}
+                                    action={log.action}
+                                    time={new Date(log.created_at).toLocaleTimeString()}
+                                    details={log.details}
+                                />
+                            ))
+                        )}
+                    </div>
+                </div>
+                <div className="border border-zinc-800 bg-zinc-900/40 p-6">
+                    <h3 className="text-sm font-mono text-zinc-500 mb-8 uppercase tracking-widest">Gemini 2.0 Flash Utilization</h3>
+                    <div className="space-y-10 py-4">
+                        <UsageBar label="Personalization Engine" value={75} />
+                        <UsageBar label="Multimodal Extraction" value={45} />
+                        <UsageBar label="Deliverability Analysis" value={90} />
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function StatCard({ icon: Icon, label, value, change, changeColor = "text-zinc-500" }: any) {
+    return (
+        <div className="p-6 border border-zinc-800 bg-zinc-900/40 relative group overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-px bg-blue-500/20" />
+            <div className="flex justify-between items-start mb-4">
+                <Icon className="w-5 h-5 text-blue-400" />
+                <span className={`text-[10px] font-mono ${changeColor}`}>{change}</span>
+            </div>
+            <h3 className="text-zinc-500 text-sm font-mono mb-1 uppercase tracking-widest">{label}</h3>
+            <p className="text-3xl font-bold">{value}</p>
+        </div>
+    );
+}
+
+function ActivityItem({ title, action, time, details }: any) {
+    return (
+        <div className="flex justify-between items-start p-4 border border-zinc-800/50 bg-zinc-950/30 group hover:border-zinc-700 transition-all">
+            <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                    <h4 className="font-bold text-xs text-white uppercase tracking-wider">{title}</h4>
+                </div>
+                <p className="text-[10px] text-zinc-400 font-mono">{action}</p>
+                {details && <p className="text-[10px] text-zinc-600 font-mono italic">{details}</p>}
+            </div>
+            <span className="text-[10px] font-mono text-zinc-600">{time}</span>
+        </div>
+    );
+}
+
+function UsageBar({ label, value }: { label: string, value: number }) {
+    return (
+        <div className="space-y-2">
+            <div className="flex justify-between text-[10px] font-mono uppercase tracking-widest">
+                <span className="text-zinc-400">{label}</span>
+                <span className="text-blue-400">{value}%</span>
+            </div>
+            <div className="h-1 text-zinc-800 bg-zinc-800 relative">
+                <div
+                    className="absolute top-0 left-0 h-full bg-blue-500"
+                    style={{ width: `${value}%` }}
+                />
+            </div>
+        </div>
+    );
+}
