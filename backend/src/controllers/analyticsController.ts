@@ -2,17 +2,17 @@ import { Request, Response } from 'express';
 import { pool } from '../config/db.js';
 import { AuthRequest } from '../middlewares/authMiddleware.js';
 
-export const getAgentStats = async (req: AuthRequest, res: Response) => {
+export const getCampaignStats = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.id;
     const { id } = req.params;
     try {
         const docCountRes = await pool.query('SELECT COUNT(*) FROM documents WHERE agent_id = $1 AND user_id = $2', [id, userId]);
         const msgCountRes = await pool.query('SELECT COUNT(*) FROM messages WHERE agent_id = $1 AND user_id = $2', [id, userId]);
         const tokenRes = await pool.query('SELECT SUM(tokens_used) as total FROM messages WHERE agent_id = $1 AND user_id = $2', [id, userId]);
-        const agentRes = await pool.query('SELECT status, created_at, uptime FROM agents WHERE id = $1 AND user_id = $2', [id, userId]);
+        const agentRes = await pool.query('SELECT status, created_at, uptime FROM campaigns WHERE id = $1 AND user_id = $2', [id, userId]);
 
         if (agentRes.rows.length === 0) {
-            res.status(404).json({ error: 'Agent not found' });
+            res.status(404).json({ error: 'Campaign not found' });
             return;
         }
 
@@ -26,20 +26,20 @@ export const getAgentStats = async (req: AuthRequest, res: Response) => {
             uptime: agent.uptime || '99.9%'
         });
     } catch (error) {
-        console.error('Error fetching agent stats:', error);
-        res.status(500).json({ error: 'Failed to fetch agent stats' });
+        console.error('Error fetching campaign stats:', error);
+        res.status(500).json({ error: 'Failed to fetch campaign stats' });
     }
 };
 
 export const getSystemOverview = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.id;
     try {
-        const agentCountRes = await pool.query('SELECT COUNT(*) FROM agents WHERE user_id = $1', [userId]);
+        const agentCountRes = await pool.query('SELECT COUNT(*) FROM campaigns WHERE user_id = $1', [userId]);
         const docCountRes = await pool.query('SELECT COUNT(*) FROM documents WHERE user_id = $1', [userId]);
         const msgCountRes = await pool.query('SELECT COUNT(*) FROM messages WHERE user_id = $1', [userId]);
 
         res.json({
-            totalAgents: parseInt(agentCountRes.rows[0].count),
+            totalCampaigns: parseInt(agentCountRes.rows[0].count),
             totalDocuments: parseInt(docCountRes.rows[0].count),
             totalRequests: parseInt(msgCountRes.rows[0].count),
             systemHealth: 'Optimal',
@@ -86,9 +86,9 @@ export const getActivityLogs = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.id;
     try {
         const result = await pool.query(`
-            SELECT a.name as agent_name, l.action, l.details, l.created_at 
+            SELECT a.name as campaign_name, l.action, l.details, l.created_at 
             FROM activity_logs l 
-            LEFT JOIN agents a ON l.agent_id = a.id 
+            LEFT JOIN campaigns a ON l.agent_id = a.id 
             WHERE l.user_id = $1
             ORDER BY l.created_at DESC LIMIT 20
         `, [userId]);
