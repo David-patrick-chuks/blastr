@@ -1,4 +1,4 @@
-import { ChevronLeft, Mail, Shield, Key, ExternalLink, Info } from 'lucide-react';
+import { ChevronLeft, Shield, Key, ExternalLink, Info } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export function SMTPGuideView() {
