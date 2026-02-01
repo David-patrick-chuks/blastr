@@ -45,10 +45,10 @@ export function Hero({ onAuth }: { onAuth: () => void }) {
 
         <div className="mt-8 flex justify-center">
           <a
-            href="/docs"
+            href="/guide/smtp"
             className="text-zinc-500 hover:text-blue-400 text-sm font-mono transition-colors border-b border-transparent hover:border-blue-400"
           >
-            Read Documentation -&gt;
+            SMTP App Password Guide -&gt;
           </a>
         </div>
 

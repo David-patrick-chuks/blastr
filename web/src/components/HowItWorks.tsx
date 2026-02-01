@@ -14,6 +14,10 @@ campaign.template = "Hi {{name}}...";`,
     title: "Extract Recipients",
     description:
       "Upload image lists or screenshots. Our AI Vision engine identifies email addresses, verifies formats, and appends them to your targeted campaigns.",
+    code: `// Extracting from Base64 List
+const list = await vision.extract(image);
+const recipients = list.filter(e => e.valid);
+campaign.sync(recipients);`,
   },
   {
     number: "03",
