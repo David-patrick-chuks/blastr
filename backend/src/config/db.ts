@@ -52,8 +52,17 @@ export const pool = new Pool({
 });
 
 pool.on('connect', () => {
-    logger.debug('New client connected to Postgres database');
+    logger.info('Database connection established successfully');
 });
+
+// Test connection immediately
+pool.query('SELECT NOW()')
+    .then(() => {
+        logger.info('Database connectivity verified');
+    })
+    .catch(err => {
+        logger.error('Database connection failed:', err.message);
+    });
 
 pool.on('error', (err) => {
     logger.error({ err }, 'Unexpected error on idle client');
