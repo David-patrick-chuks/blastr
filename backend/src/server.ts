@@ -46,5 +46,5 @@ app.use(errorHandler);
 
 const PORT = env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(`GAIA Kernel active on port ${PORT}`);
+    console.log(`BlastAgent Core active on port ${PORT}`);
 });

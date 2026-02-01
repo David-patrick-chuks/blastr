@@ -56,7 +56,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
                     <div className="w-12 h-12 flex items-center justify-center border border-blue-500/20 bg-blue-500/5 mb-4 rounded-full">
                         <Shield className="w-6 h-6 text-blue-500" />
                     </div>
-                    <h2 className="text-xl font-bold tracking-tight uppercase">{isLogin ? 'Welcome back' : 'Join GAIA'}</h2>
+                    <h2 className="text-xl font-bold tracking-tight uppercase">{isLogin ? 'Welcome back' : 'Join BlastAgent AI'}</h2>
                     <p className="text-zinc-500 text-[10px] font-mono mt-2 tracking-widest uppercase">
                         {isLogin ? 'Login to your account' : 'Create your secure identity'}
                     </p>

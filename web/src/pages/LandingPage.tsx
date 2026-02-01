@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Features } from "../components/Features";
 import { HowItWorks } from "../components/HowItWorks";
-import { DeveloperCLI } from "../components/DeveloperCLI";
 import { Security } from "../components/Security";
 import { Footer } from "../components/Footer";
 import { Hero } from "../components/Hero";
@@ -26,7 +25,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             />
             <Features />
             <HowItWorks />
-            <DeveloperCLI />
             <Security />
             <Footer />
             <AuthModal

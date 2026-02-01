@@ -18,7 +18,7 @@ export function useSocket(room?: string) {
 
         socket.on('connect', () => {
             setConnected(true);
-            console.log('GAIA Neural Link Established:', socket.id);
+            console.log('BlastAgent Stream Established:', socket.id);
             if (room) {
                 socket.emit('join', room);
             }
@@ -26,7 +26,7 @@ export function useSocket(room?: string) {
 
         socket.on('disconnect', () => {
             setConnected(false);
-            console.log('GAIA Neural Link Severed');
+            console.log('BlastAgent Stream Severed');
         });
 
         return () => {

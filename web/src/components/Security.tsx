@@ -34,8 +34,8 @@ export function Security() {
                 "Isolated memory for every agent",
                 "Automatic protection against harmful content",
                 "Clear logs of every agent interaction",
-                "Total control over agent boundaries",
-                "Secure multi-platform connectivity",
+                "Total control over campaign boundaries",
+                "Secure SMTP server connectivity",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-zinc-300">
                   <Check className="w-4 h-4 text-blue-400 mt-1 flex-shrink-0" />
@@ -58,10 +58,10 @@ export function Security() {
             </div>
             <ul className="space-y-3">
               {[
-                "Alpha: We are improving GAIA daily",
-                "Standard AI rate limits apply",
-                "Experimental autonomous reasoning",
-                "External platform API constraints",
+                "Stable: We are improving BlastAgent daily",
+                "Standard Gemini rate limits apply",
+                "Advanced AI personalization context",
+                "Standard SMTP protocol constraints",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-zinc-400">
                   <X className="w-4 h-4 text-zinc-500 mt-1 flex-shrink-0" />
@@ -88,7 +88,7 @@ export function Security() {
               <div className="text-[10px] text-zinc-600 mb-1 font-mono uppercase tracking-widest">
                 AI Engine
               </div>
-              <div className="text-zinc-200 font-mono text-sm">Gemini 3</div>
+              <div className="text-zinc-200 font-mono text-sm">Gemini 2.0</div>
             </div>
             <div className="bg-zinc-950 p-4">
               <div className="text-[10px] text-zinc-600 mb-1 font-mono uppercase tracking-widest">

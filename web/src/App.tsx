@@ -2,9 +2,9 @@ import "./index.css";
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { LandingPage } from "./pages/LandingPage";
-import { DocsView } from "./pages/DocsView";
 import { Dashboard } from "./pages/Dashboard";
 import { AuthCallback } from "./pages/AuthCallback";
+import { SMTPGuideView } from "./pages/SMTPGuideView";
 import { authService } from "./services/index";
 
 function LandingPageWrapper() {
@@ -35,7 +35,7 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  if (loading) return <div className="min-h-screen bg-zinc-950 flex items-center justify-center font-mono text-blue-500">BOOTING_GAIA_OS...</div>;
+  if (loading) return <div className="min-h-screen bg-zinc-950 flex items-center justify-center font-mono text-blue-500">INIT_BLASTAGENT_CORE...</div>;
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-blue-500/30">
@@ -45,7 +45,7 @@ function App() {
             path="/"
             element={session ? <Navigate to="/dashboard" replace /> : <LandingPageWrapper />}
           />
-          <Route path="/docs" element={<DocsView />} />
+          <Route path="/guide/smtp" element={<SMTPGuideView />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route
             path="/dashboard/*"

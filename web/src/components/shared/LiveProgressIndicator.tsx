@@ -58,7 +58,7 @@ export function LiveProgressIndicator({ userId }: LiveProgressIndicatorProps) {
                 <div className="flex items-center gap-2">
                     <Activity className={`w-4 h-4 ${connected ? 'text-blue-500' : 'text-zinc-600'}`} />
                     <span className="text-[10px] font-mono font-bold tracking-[0.2em] uppercase text-zinc-400">
-                        Neural_Sync_Status
+                        Transmission_Status
                     </span>
                 </div>
                 <div className={`w-1.5 h-1.5 rounded-full ${connected ? 'bg-blue-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]' : 'bg-red-500'}`} />
@@ -85,7 +85,7 @@ export function LiveProgressIndicator({ userId }: LiveProgressIndicatorProps) {
                         />
                     </div>
                     <div className="flex justify-between text-[8px] font-mono text-zinc-600 uppercase tracking-widest">
-                        <span>GAIA_PROC_LOAD</span>
+                        <span>ENGINE_PROC_LOAD</span>
                         <span>{progress.progress}%</span>
                     </div>
                 </div>
