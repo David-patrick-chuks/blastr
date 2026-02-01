@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, Lock, Shield, Info, Github, Chrome } from 'lucide-react';
+import { Mail, Lock, Shield, Info, Chrome } from 'lucide-react';
 import { authService } from '../../services/index';
 
 interface AuthModalProps {
@@ -37,7 +37,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
         }
     };
 
-    const handleOAuth = async (provider: 'google' | 'github') => {
+    const handleOAuth = async (provider: 'google') => {
         try {
             await authService.signInWithOAuth(provider);
         } catch (err: any) {
@@ -62,20 +62,13 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-1 gap-4 mb-6">
                     <button
                         onClick={() => handleOAuth('google')}
                         className="flex items-center justify-center gap-2 py-3 bg-zinc-950 border border-zinc-800 hover:border-zinc-700 transition-colors text-[10px] font-mono uppercase tracking-wider"
                     >
                         <Chrome className="w-4 h-4" />
                         Google
-                    </button>
-                    <button
-                        onClick={() => handleOAuth('github')}
-                        className="flex items-center justify-center gap-2 py-3 bg-zinc-950 border border-zinc-800 hover:border-zinc-700 transition-colors text-[10px] font-mono uppercase tracking-wider"
-                    >
-                        <Github className="w-4 h-4" />
-                        GitHub
                     </button>
                 </div>
 

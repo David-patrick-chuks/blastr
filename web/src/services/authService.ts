@@ -48,7 +48,7 @@ export const authService = {
         notifyListeners(null);
     },
 
-    async signInWithOAuth(provider: 'google' | 'github') {
+    async signInWithOAuth(provider: 'google') {
         const data = await apiClient.get<any>(`/auth/oauth/${provider}`);
         if (data.url) {
             window.location.href = data.url;

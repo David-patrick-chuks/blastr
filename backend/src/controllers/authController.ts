@@ -116,7 +116,7 @@ export const initiateOAuth = async (req: Request, res: Response) => {
     const { redirectTo } = req.query;
     logger.info(`[OAUTH] Initiate request for provider: ${provider}`);
 
-    if (provider !== 'google' && provider !== 'github') {
+    if (provider !== 'google') {
         logger.error(`[OAUTH] Unsupported provider: ${provider}`);
         return res.status(400).json({ error: 'Unsupported OAuth provider' });
     }
