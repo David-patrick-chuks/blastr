@@ -34,6 +34,9 @@ export function SettingsView() {
             const profile = await authService.getProfile();
             if (profile.preferences && Object.keys(profile.preferences).length > 0) {
                 setPreferences(prev => ({ ...prev, ...profile.preferences }));
+                if (profile.preferences.smtp) {
+                    setSmtpSettings(prev => ({ ...prev, ...profile.preferences.smtp }));
+                }
             }
         } catch (error) {
             console.error("Failed to load settings:", error);
@@ -65,11 +68,14 @@ export function SettingsView() {
 
     const handleSaveSMTP = async () => {
         setSaving(true);
-        // In a real app, this would call a dedicated settings service
-        setTimeout(() => {
+        try {
+            await authService.updateSmtpSettings(smtpSettings);
             showInfo("SMTP configuration saved and tested successfully.");
+        } catch (error) {
+            showInfo("Failed to save SMTP configuration.");
+        } finally {
             setSaving(false);
-        }, 1000);
+        }
     };
 
     const togglePref = (key: keyof typeof preferences) => {

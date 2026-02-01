@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Shield, Globe, Search, CheckCircle2, Trash2, Upload, Loader2 } from "lucide-react";
 import { InfoModal } from "../../components/Modal";
-import { agentService } from "../../services/index";
+import { campaignService } from "../../services/index";
 
 export function DeployView() {
     const [infoModalOpen, setInfoModalOpen] = useState(false);
@@ -21,7 +21,7 @@ export function DeployView() {
 
     const loadCampaigns = async () => {
         try {
-            const data = await agentService.fetchAgents();
+            const data = await campaignService.fetchCampaigns();
             setCampaigns(data);
             if (data.length > 0) setSelectedCampaignId(data[0].id);
         } catch (error) {
@@ -46,7 +46,7 @@ export function DeployView() {
             reader.readAsDataURL(file);
             reader.onload = async () => {
                 const base64 = (reader.result as string).split(',')[1];
-                const res = await agentService.extractEmails(base64);
+                const res = await campaignService.extractEmails(base64);
                 setExtractedEmails(res.emails);
                 setExtracting(false);
                 showInfo("Extraction Complete", `Found ${res.emails.length} email addresses in the image.`);
@@ -63,7 +63,7 @@ export function DeployView() {
         setSyncing(true);
         try {
             const campaign = campaigns.find(c => c.id === selectedCampaignId);
-            const updated = await agentService.updateAgent(selectedCampaignId, {
+            const updated = await campaignService.updateCampaign(selectedCampaignId, {
                 total_recipients: (campaign?.total_recipients || 0) + extractedEmails.length
             });
             showInfo("Sync Success", `Successfully added ${extractedEmails.length} recipients to ${updated.name}.`);

@@ -65,6 +65,15 @@ export const authService = {
         return updated;
     },
 
+    async updateSmtpSettings(settings: any): Promise<any> {
+        return this.updateProfile({ preferences: { smtp: settings } });
+    },
+
+    async getSmtpSettings(): Promise<any> {
+        const profile = await this.getProfile();
+        return profile.preferences?.smtp || null;
+    },
+
     async getCurrentUser() {
         const user = localStorage.getItem('gaia_user');
         return user ? JSON.parse(user) : null;

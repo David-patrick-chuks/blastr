@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Rocket, ExternalLink, Plus, Search, Trash2, Edit } from "lucide-react";
 import { InfoModal, ConfirmModal } from "../../components/Modal";
 import { CampaignModal } from "../../components/agents/CampaignModal";
-import { agentService } from "../../services/index";
+import { campaignService } from "../../services/index";
 import type { Campaign } from "../../types/index";
 
 export function CampaignsView() {
@@ -24,7 +24,7 @@ export function CampaignsView() {
 
     const loadCampaigns = async () => {
         try {
-            const data = await agentService.fetchAgents() as Campaign[];
+            const data = await campaignService.fetchCampaigns() as Campaign[];
             setCampaigns(data);
         } catch (error) {
             console.error("Failed to load campaigns:", error);
@@ -57,11 +57,11 @@ export function CampaignsView() {
     const handleSaveAgent = async (formData: Partial<Campaign>) => {
         try {
             if (currentCampaign) {
-                const updated = await agentService.updateAgent(currentCampaign.id, formData) as Campaign;
+                const updated = await campaignService.updateCampaign(currentCampaign.id, formData) as Campaign;
                 setCampaigns(campaigns.map((c: Campaign) => c.id === updated.id ? updated : c));
                 showInfo("Success", "Campaign updated successfully.");
             } else {
-                const created = await agentService.createAgent(formData) as Campaign;
+                const created = await campaignService.createCampaign(formData) as Campaign;
                 setCampaigns([created, ...campaigns]);
                 showInfo("Success", "New campaign created successfully.");
             }
@@ -73,7 +73,7 @@ export function CampaignsView() {
     const handleConfirmDelete = async () => {
         if (!currentCampaign) return;
         try {
-            await agentService.deleteAgent(currentCampaign.id);
+            await campaignService.deleteCampaign(currentCampaign.id);
             setCampaigns(campaigns.filter((c: Campaign) => c.id !== currentCampaign.id));
             showInfo("Deleted", "Campaign has been removed from the platform.");
         } catch (error) {

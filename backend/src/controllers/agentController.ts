@@ -16,11 +16,11 @@ export const getAgents = async (req: AuthRequest, res: Response) => {
 
 export const createAgent = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.id;
-    const { name, role, platform, system_instruction } = req.body;
+    const { name, role, template, system_instruction } = req.body;
     try {
         const result = await pool.query(
             'INSERT INTO campaigns (name, role, template, system_instruction, status, user_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-            [name, role, name, system_instruction, 'Active', userId]
+            [name, role, template, system_instruction, 'Active', userId]
         );
         res.status(201).json(result.rows[0]);
     } catch (error) {
