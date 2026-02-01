@@ -21,14 +21,14 @@ export function KnowledgeView() {
     const [clearConfirmOpen, setClearConfirmOpen] = useState(false);
 
     useEffect(() => {
-        loadAgents();
+        loadCampaigns();
     }, []);
 
     useEffect(() => {
-        if (selectedAgentId) {
+        if (selectedCampaignId) {
             loadDocuments();
         }
-    }, [selectedAgentId]);
+    }, [selectedCampaignId]);
 
     const loadCampaigns = async () => {
         try {
@@ -82,7 +82,7 @@ export function KnowledgeView() {
         try {
             await knowledgeService.deleteDocument(id);
             setDocuments(documents.filter((d: Document) => d.id !== id));
-            showInfo("Deleted", "Document has been removed from the agent's memory.");
+            showInfo("Deleted", "Document has been removed from the platform knowledge.");
         } catch (error) {
             showInfo("Error", "Failed to delete document.");
         }
@@ -94,7 +94,7 @@ export function KnowledgeView() {
         try {
             await knowledgeService.clearAgentKnowledge(selectedCampaignId);
             setDocuments([]);
-            showInfo("Knowledge Cleared", "All documents have been removed for this agent.");
+            showInfo("Knowledge Cleared", "All documents have been removed for this campaign.");
         } catch (error) {
             showInfo("Error", "Failed to clear knowledge base.");
         } finally {
@@ -144,14 +144,14 @@ export function KnowledgeView() {
                     <div className="flex items-center gap-4">
                         <div>
                             <h2 className="text-xl font-bold mb-1">Knowledge Base</h2>
-                            <p className="text-zinc-500 text-sm">Manage the documents your agents use for context.</p>
+                            <p className="text-zinc-500 text-sm">Manage the documents your campaigns use for personalization context.</p>
                         </div>
                         <select
                             value={selectedCampaignId}
-                            onChange={(e) => setSelectedAgentId(e.target.value)}
+                            onChange={(e) => setSelectedCampaignId(e.target.value)}
                             className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs py-2 px-3 outline-none focus:border-blue-500/50 transition-colors"
                         >
-                            {agents.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
+                            {campaigns.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                         </select>
                     </div>
                     <div className="flex items-center gap-3">
@@ -330,7 +330,7 @@ export function KnowledgeView() {
                 onClose={() => setClearConfirmOpen(false)}
                 onConfirm={handleClearKnowledge}
                 title="Clear Knowledge Base"
-                message={`Are you sure you want to permanently delete all ${documents.length} indexed documents for this agent? This action cannot be undone.`}
+                message={`Are you sure you want to permanently delete all ${documents.length} indexed documents for this campaign? This action cannot be undone.`}
                 confirmText="Clear Knowledge"
                 variant="danger"
             />

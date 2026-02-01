@@ -1,4 +1,4 @@
-import { Activity, Bot, Users } from "lucide-react";
+import { Activity, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { analyticsService } from "../../services/index";
 import type { SystemOverview, ActivityLog } from "../../services/index";
