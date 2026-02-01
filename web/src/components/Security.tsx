@@ -31,9 +31,9 @@ export function Security() {
             <ul className="space-y-3">
               {[
                 "Your data is encrypted and strictly yours",
-                "Isolated memory for every agent",
+                "Isolated context for every campaign",
                 "Automatic protection against harmful content",
-                "Clear logs of every agent interaction",
+                "Clear logs of every campaign interaction",
                 "Total control over campaign boundaries",
                 "Secure SMTP server connectivity",
               ].map((item) => (
@@ -58,10 +58,10 @@ export function Security() {
             </div>
             <ul className="space-y-3">
               {[
-                "Stable: We are improving BlastAgent daily",
-                "Standard Gemini rate limits apply",
-                "Advanced AI personalization context",
-                "Standard SMTP protocol constraints",
+                "Stable: Production-ready distribution",
+                "Standard Gemini safety filters active",
+                "Email-optimized personalization logic",
+                "Standard SMTP protocol encryption",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-zinc-400">
                   <X className="w-4 h-4 text-zinc-500 mt-1 flex-shrink-0" />
@@ -94,7 +94,7 @@ export function Security() {
               <div className="text-[10px] text-zinc-600 mb-1 font-mono uppercase tracking-widest">
                 Brain Memory
               </div>
-              <div className="text-zinc-200 font-mono text-sm">Vector Indexing</div>
+              <div className="text-zinc-200 font-mono text-sm">Contextual Logic</div>
             </div>
             <div className="bg-zinc-950 p-4">
               <div className="text-[10px] text-zinc-600 mb-1 font-mono uppercase tracking-widest">

@@ -1,0 +1,113 @@
+Technical Summary (Corrected)
+What We’re Building (Plain English)
+A send-only AI email blasting platform where users create agents that generate, personalize, and send emails using their Gmail accounts.
+Nodemailer handles email delivery.
+Gemini APIs provide all intelligence: extraction, reasoning, rewriting, safety, and variation.
+Tech Stack & Libraries
+1. Frontend
+Purpose: Campaign setup, agent creation, uploads.
+Libraries / Tools
+Next.js (React)
+TypeScript
+Tailwind CSS
+React Hook Form
+File upload (browser API / dropzone)
+2. Backend / API
+Purpose: Agent orchestration, scheduling, Gemini calls, email sending.
+Libraries / Tools
+Node.js
+Express / Fastify
+TypeScript
+dotenv (env management)
+zod / joi (input validation)
+3. Email Sending
+Purpose: Send emails from user accounts.
+Library
+Nodemailer
+Protocol / Auth (not libraries)
+SMTP
+Gmail App Password (send-only)
+Features
+Batched sending
+Rate limiting
+Scheduled runs
+Message rotation
+4. Scheduling & Agents
+Purpose: Run campaigns at user-defined times.
+Libraries
+node-cron (simple scheduling)
+or
+BullMQ + Redis (if you want queue-based sending)
+5. Data & Storage
+Purpose: Store campaigns, agents, logs.
+Libraries
+PostgreSQL / MongoDB
+Prisma / Mongoose
+csv-parse / papaparse
+crypto (basic encryption)
+EXACTLY What Gemini Is Used For (Important Section)
+This is the part judges will read carefully 👇
+Gemini API Usage (Full List)
+1. Image / Screenshot → Email Extraction
+Gemini Vision
+Extract email addresses from:
+Screenshots
+Photos
+Scanned lists
+Normalize formats
+Remove duplicates
+Validate structure
+2. CSV & Text Understanding
+Gemini Text
+Understand uploaded CSV columns
+Infer missing fields (name, role, company)
+Clean inconsistent data
+3. Message Variation Engine
+Gemini Text
+Generate multiple semantic variations of the same message
+Different sentence structures
+Different CTA phrasing
+Different subject lines
+Ensures no two recipients receive identical content.
+4. Spam-Risk & Deliverability Analysis
+Gemini Text
+Detect spam-trigger words
+Flag aggressive CTAs
+Analyze subject/body risk
+Suggest safer rewrites
+5. Personalization From Minimal Data
+Gemini Text
+Inject name, company, role naturally
+Adjust tone per recipient
+Avoid robotic placeholders
+6. Tone & Style Cloning
+Gemini Text
+Learn tone from a sample email
+Recreate style across all generated variants
+7. Localization & Cultural Adaptation
+Gemini Text
+Adjust greetings and phrasing by country
+Formal vs casual tone
+Region-aware language patterns
+8. Subject Line Intelligence
+Gemini Text
+Generate multiple subject line options
+Label intent (curiosity, direct, soft)
+Rotate subject lines per batch
+9. Campaign Planning Assistance
+Gemini Text
+Recommend:
+Batch sizes
+Message angles
+Spacing between sends
+Explain rationale to user
+10. Compliance Copy Generation
+Gemini Text
+Generate compliant footer text
+Add reason-for-contact lines
+Suggest unsubscribe wording
+Clear One-Line Summary (Use This in Pitch)
+BlastAgent AI uses Nodemailer for email delivery and Gemini APIs as the intelligence layer—extracting email lists from images, generating human-like message variations, personalizing content, analyzing spam risk, and optimizing campaigns before sending.
+
+
+Blast#blast5686
