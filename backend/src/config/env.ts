@@ -24,16 +24,21 @@ const getEnvInput = (key: string): string => {
         console.warn(`Missing environment variable: ${key}`);
         return '';
     }
-    return value;
+    return value.trim();
 };
 
 export const env: Env = {
     PORT: parseInt(process.env.PORT || '3000', 10),
-    SUPABASE_URL: getEnvInput('SUPABASE_URL'),
-    SUPABASE_KEY: getEnvInput('SUPABASE_KEY'),
-    GEMINI_API_KEY: getEnvInput('GEMINI_API_KEY'),
-    DATABASE_URL: getEnvInput('DATABASE_URL'),
+    SUPABASE_URL: getEnvInput('SUPABASE_URL').trim(),
+    SUPABASE_KEY: getEnvInput('SUPABASE_KEY').trim(),
+    GEMINI_API_KEY: getEnvInput('GEMINI_API_KEY').trim(),
+    DATABASE_URL: getEnvInput('DATABASE_URL').trim(),
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
     SMTP_USER: process.env.SMTP_USER,
     SMTP_PASS: process.env.SMTP_PASS,
 };
+
+console.log('[ENV] Initialized');
+console.log(`[ENV] Database URL length: ${env.DATABASE_URL.length}`);
+console.log(`[ENV] Supabase URL: ${env.SUPABASE_URL}`);
+console.log(`[ENV] Supabase Key length: ${env.SUPABASE_KEY.length}`);
