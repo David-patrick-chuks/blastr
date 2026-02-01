@@ -6,7 +6,7 @@ import { AuthRequest } from '../middlewares/authMiddleware.js';
 export const getAgents = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.id;
     try {
-        const result = await pool.query('SELECT * FROM campaigns WHERE user_id = $1 ORDER BY created_at DESC', [userId]);
+        const result = await pool.query('SELECT * FROM agents WHERE user_id = $1 ORDER BY created_at DESC', [userId]);
         res.json(result.rows);
     } catch (error) {
         console.error('Error fetching campaigns:', error);
@@ -19,7 +19,7 @@ export const createAgent = async (req: AuthRequest, res: Response) => {
     const { name, role, template, system_instruction } = req.body;
     try {
         const result = await pool.query(
-            'INSERT INTO campaigns (name, role, template, system_instruction, status, user_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            'INSERT INTO agents (name, role, template, system_instruction, status, user_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
             [name, role, template, system_instruction, 'Active', userId]
         );
         res.status(201).json(result.rows[0]);
@@ -33,7 +33,7 @@ export const getAgentById = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.id;
     const { id } = req.params;
     try {
-        const result = await pool.query('SELECT * FROM campaigns WHERE id = $1 AND user_id = $2', [id, userId]);
+        const result = await pool.query('SELECT * FROM agents WHERE id = $1 AND user_id = $2', [id, userId]);
         if (result.rows.length === 0) {
             res.status(404).json({ error: 'Campaign not found' });
             return;
@@ -72,7 +72,7 @@ export const updateAgent = async (req: AuthRequest, res: Response) => {
     fields.push(`updated_at = NOW()`);
 
     values.push(id, userId);
-    const sql = `UPDATE campaigns SET ${fields.join(', ')} WHERE id = $${queryIndex} AND user_id = $${queryIndex + 1} RETURNING *`;
+    const sql = `UPDATE agents SET ${fields.join(', ')} WHERE id = $${queryIndex} AND user_id = $${queryIndex + 1} RETURNING *`;
 
     try {
         const result = await pool.query(sql, values);
@@ -91,7 +91,7 @@ export const deleteAgent = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.id;
     const { id } = req.params;
     try {
-        const result = await pool.query('DELETE FROM campaigns WHERE id = $1 AND user_id = $2 RETURNING *', [id, userId]);
+        const result = await pool.query('DELETE FROM agents WHERE id = $1 AND user_id = $2 RETURNING *', [id, userId]);
         if (result.rows.length === 0) {
             res.status(404).json({ error: 'Campaign not found' });
             return;
@@ -107,7 +107,7 @@ export const getAgentHealth = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.id;
     const { id } = req.params;
     try {
-        const result = await pool.query('SELECT name, status FROM campaigns WHERE id = $1 AND user_id = $2', [id, userId]);
+        const result = await pool.query('SELECT name, status FROM agents WHERE id = $1 AND user_id = $2', [id, userId]);
         if (result.rows.length === 0) {
             res.status(404).json({ error: 'Campaign not found' });
             return;

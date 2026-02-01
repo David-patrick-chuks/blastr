@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { env } from '../config/env.js';
+import { emailService } from '../services/emailService.js';
 
 export const getAPIKeysStatus = async (req: Request, res: Response) => {
     try {
@@ -21,5 +22,24 @@ export const getAPIKeysStatus = async (req: Request, res: Response) => {
     } catch (error) {
         console.error('Error fetching API key status:', error);
         res.status(500).json({ error: 'Failed to fetch API key status' });
+    }
+};
+
+export const testSMTPConnection = async (req: Request, res: Response) => {
+    const { host, port, user, pass } = req.body;
+
+    if (!host || !port || !user || !pass) {
+        return res.status(400).json({ error: 'Missing SMTP configuration fields' });
+    }
+
+    try {
+        const success = await emailService.verifyConnection({ host, port: parseInt(port), user, pass });
+        if (success) {
+            res.json({ success: true, message: 'SMTP connection verified successfully' });
+        } else {
+            res.status(400).json({ success: false, error: 'Failed to connect to SMTP server' });
+        }
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
     }
 };

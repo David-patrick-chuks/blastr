@@ -15,28 +15,59 @@ class EmailServiceClass {
 
     constructor() {
         if (env.SMTP_USER && env.SMTP_PASS) {
+            const host = env.SMTP_HOST || 'smtp.gmail.com';
+            const port = parseInt(env.SMTP_PORT || '587');
             this.transporter = nodemailer.createTransport({
-                service: 'gmail',
+                host,
+                port,
+                secure: port === 465,
                 auth: {
                     user: env.SMTP_USER,
                     pass: env.SMTP_PASS,
                 },
             });
-            logger.info('Email service initialized with Gmail SMTP');
+            logger.info(`Email service initialized with ${host}`);
         } else {
             logger.warn('Email service NOT initialized: SMTP_USER or SMTP_PASS missing');
         }
     }
 
-    async sendEmail(options: EmailOptions): Promise<boolean> {
-        if (!this.transporter) {
+    createTransporter(config: { host: string; port: number; user: string; pass: string }) {
+        return nodemailer.createTransport({
+            host: config.host,
+            port: config.port,
+            secure: config.port === 465,
+            auth: {
+                user: config.user,
+                pass: config.pass,
+            },
+        });
+    }
+
+    async verifyConnection(config: { host: string; port: number; user: string; pass: string }): Promise<boolean> {
+        try {
+            const transporter = this.createTransporter(config);
+            await transporter.verify();
+            return true;
+        } catch (error: any) {
+            logger.error(`SMTP Verification failed: ${error.message}`);
+            return false;
+        }
+    }
+
+    async sendEmail(options: EmailOptions, config?: { host: string; port: number; user: string; pass: string }): Promise<boolean> {
+        const transporter = config ? this.createTransporter(config) : this.transporter;
+        
+        if (!transporter) {
             logger.error('Cannot send email: Transporter not initialized');
             return false;
         }
 
+        const fromUser = config?.user || env.SMTP_USER || 'no-reply@blastagent.ai';
+
         try {
-            const info = await this.transporter.sendMail({
-                from: options.from || `"BlastAgent AI" <${env.SMTP_USER || 'no-reply@blastagent.ai'}>`,
+            const info = await transporter.sendMail({
+                from: options.from || `"BlastAgent AI" <${fromUser}>`,
                 to: options.to,
                 subject: options.subject,
                 text: options.text,
@@ -51,12 +82,12 @@ class EmailServiceClass {
         }
     }
 
-    async sendBatch(emails: EmailOptions[]): Promise<{ successful: number; failed: number }> {
+    async sendBatch(emails: EmailOptions[], config?: { host: string; port: number; user: string; pass: string }): Promise<{ successful: number; failed: number }> {
         let successful = 0;
         let failed = 0;
 
         for (const email of emails) {
-            const result = await this.sendEmail(email);
+            const result = await this.sendEmail(email, config);
             if (result) {
                 successful++;
             } else {

@@ -13,7 +13,7 @@ function LandingPageWrapper() {
 }
 
 function DashboardWrapper() {
-  return <Dashboard onLogout={() => { }} />;
+  return <Dashboard onLogout={() => authService.logout()} />;
 }
 
 function App() {

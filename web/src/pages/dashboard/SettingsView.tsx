@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Shield, Key, Bell, Loader2 } from "lucide-react";
 import { InfoModal } from "../../components/Modal";
-import { authService } from "../../services/index";
+import { authService, apiClient } from "../../services/index";
 
 export function SettingsView() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [testing, setTesting] = useState(false);
+    const [profile, setProfile] = useState<any>(null);
     const [preferences, setPreferences] = useState({
         trackingEnabled: true,
         deduplicateEmails: true,
@@ -31,11 +33,12 @@ export function SettingsView() {
 
     const loadSettings = async () => {
         try {
-            const profile = await authService.getProfile();
-            if (profile.preferences && Object.keys(profile.preferences).length > 0) {
-                setPreferences(prev => ({ ...prev, ...profile.preferences }));
-                if (profile.preferences.smtp) {
-                    setSmtpSettings(prev => ({ ...prev, ...profile.preferences.smtp }));
+            const data = await authService.getProfile();
+            setProfile(data);
+            if (data.preferences && Object.keys(data.preferences).length > 0) {
+                setPreferences(prev => ({ ...prev, ...data.preferences }));
+                if (data.preferences.smtp) {
+                    setSmtpSettings(prev => ({ ...prev, ...data.preferences.smtp }));
                 }
             }
         } catch (error) {
@@ -54,6 +57,29 @@ export function SettingsView() {
         showInfo(`Update ${keyType} key is managed via environment variables for maximum security.`);
     };
 
+    const testConnection = async () => {
+        if (!smtpSettings.host || !smtpSettings.user || !smtpSettings.pass) {
+            showInfo("Please fill in SMTP details first.");
+            return;
+        }
+
+        setTesting(true);
+        try {
+            await authService.updateProfile({ preferences: { ...profile?.preferences, smtp: smtpSettings } });
+
+            const response = await apiClient.post<any>('/settings/test-smtp', smtpSettings);
+            if (response.success) {
+                showInfo("SUCCESS: SMTP connection verified. Your broadcast engine is ready.");
+            } else {
+                showInfo(`FAILED: ${response.error || "Connection refused."}`);
+            }
+        } catch (e: any) {
+            showInfo(`ERROR: ${e.response?.data?.error || "Failed to initiate test sequence."}`);
+        } finally {
+            setTesting(false);
+        }
+    };
+
     const handleSaveSettings = async () => {
         setSaving(true);
         try {
@@ -66,17 +92,7 @@ export function SettingsView() {
         }
     };
 
-    const handleSaveSMTP = async () => {
-        setSaving(true);
-        try {
-            await authService.updateSmtpSettings(smtpSettings);
-            showInfo("SMTP configuration saved and tested successfully.");
-        } catch (error) {
-            showInfo("Failed to save SMTP configuration.");
-        } finally {
-            setSaving(false);
-        }
-    };
+
 
     const togglePref = (key: keyof typeof preferences) => {
         setPreferences(prev => ({ ...prev, [key]: !prev[key] }));
@@ -154,10 +170,12 @@ export function SettingsView() {
                             </div>
                             <div className="pt-2">
                                 <button
-                                    onClick={handleSaveSMTP}
-                                    className="w-full py-2 bg-blue-500/10 border border-blue-500/30 text-blue-400 text-[10px] font-mono hover:bg-blue-500/20 transition-all uppercase"
+                                    onClick={testConnection}
+                                    disabled={testing || saving}
+                                    className="w-full py-2 bg-blue-500/10 border border-blue-500/30 text-blue-400 text-[10px] font-mono hover:bg-blue-500/20 transition-all uppercase disabled:opacity-50 flex items-center justify-center gap-2"
                                 >
-                                    Save & Test Connection
+                                    {(testing || saving) && <Loader2 className="w-3 h-3 animate-spin" />}
+                                    {testing ? "Testing..." : (saving ? "Saving..." : "Save & Test Connection")}
                                 </button>
                             </div>
                         </div>

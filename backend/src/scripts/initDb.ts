@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS profiles (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Agents Table
+-- Agents/Campaigns Table
 CREATE TABLE IF NOT EXISTS agents (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID REFERENCES profiles(id),
@@ -33,9 +33,13 @@ CREATE TABLE IF NOT EXISTS agents (
     platform TEXT,
     status TEXT DEFAULT 'Active',
     system_instruction TEXT,
+    template TEXT,
+    total_recipients INTEGER DEFAULT 0,
+    sent_count INTEGER DEFAULT 0,
     parameters JSONB DEFAULT '{}',
     integrations JSONB DEFAULT '{}',
     created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
     uptime TEXT DEFAULT '100%',
     last_active TIMESTAMPTZ DEFAULT NOW()
 );
