@@ -8,7 +8,7 @@ export interface SystemOverview {
     apiLatency: string;
 }
 
-export interface AgentStats {
+export interface AgentAnalyticsStats {
     documentCount: number;
     messageCount: number;
     tokensUsed: number;
@@ -29,8 +29,8 @@ export const analyticsService = {
         return apiClient.get<SystemOverview>('/stats/overview');
     },
 
-    async getAgentStats(agentId: string): Promise<AgentStats> {
-        return apiClient.get<AgentStats>(`/stats/agents/${agentId}`);
+    async getAgentStats(agentId: string): Promise<AgentAnalyticsStats> {
+        return apiClient.get<AgentAnalyticsStats>(`/stats/agents/${agentId}`);
     },
 
     async getRealtimeStats(): Promise<number[]> {
