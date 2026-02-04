@@ -2,13 +2,13 @@ import apiClient from './apiClient';
 import type { Document, TrainingResult } from '../types/index.js';
 
 export const knowledgeService = {
-    async fetchDocuments(agentId: string): Promise<Document[]> {
-        return apiClient.get<Document[]>(`/documents?agentId=${agentId}`);
+    async fetchDocuments(campaignId: string): Promise<Document[]> {
+        return apiClient.get<Document[]>(`/documents?campaignId=${campaignId}`);
     },
 
-    async uploadDocument(agentId: string, file: File): Promise<TrainingResult> {
+    async uploadDocument(campaignId: string, file: File): Promise<TrainingResult> {
         const formData = new FormData();
-        formData.append('agentId', agentId);
+        formData.append('campaignId', campaignId);
         formData.append('file', file);
 
         return apiClient.fetch<TrainingResult>('/documents/upload', {
@@ -21,15 +21,15 @@ export const knowledgeService = {
         return apiClient.delete<{ message: string }>(`/documents/${id}`);
     },
 
-    async clearAgentKnowledge(agentId: string): Promise<{ success: boolean }> {
-        return apiClient.post<{ success: boolean }>('/documents/clear', { agentId });
+    async clearCampaignKnowledge(campaignId: string): Promise<{ success: boolean }> {
+        return apiClient.post<{ success: boolean }>('/documents/clear', { campaignId });
     },
 
-    async trainFromYoutube(agentId: string, youtubeUrl: string): Promise<TrainingResult> {
-        return apiClient.post<TrainingResult>('/documents/youtube', { agentId, youtubeUrl });
+    async trainFromYoutube(campaignId: string, youtubeUrl: string): Promise<TrainingResult> {
+        return apiClient.post<TrainingResult>('/documents/youtube', { campaignId, youtubeUrl });
     },
 
-    async crawlWebsite(agentId: string, url: string): Promise<TrainingResult> {
-        return apiClient.post<TrainingResult>('/documents/website', { agentId, url });
+    async crawlWebsite(campaignId: string, url: string): Promise<TrainingResult> {
+        return apiClient.post<TrainingResult>('/documents/website', { campaignId, url });
     }
 };

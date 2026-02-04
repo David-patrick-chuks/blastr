@@ -92,7 +92,7 @@ export function KnowledgeView() {
         if (!selectedCampaignId) return;
         setLoading(true);
         try {
-            await knowledgeService.clearAgentKnowledge(selectedCampaignId);
+            await knowledgeService.clearCampaignKnowledge(selectedCampaignId);
             setDocuments([]);
             showInfo("Knowledge Cleared", "All documents have been removed for this campaign.");
         } catch (error) {

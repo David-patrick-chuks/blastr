@@ -18,12 +18,12 @@ export function generateContentHash(text: string): string {
     return crypto.createHash('sha256').update(text.trim()).digest('hex');
 }
 
-export async function getContentVersion(agentId: string, contentHash: string, filename: string, userId?: string): Promise<number> {
+export async function getContentVersion(campaignId: string, contentHash: string, filename: string, userId?: string): Promise<number> {
     try {
         // Find existing content with same hash in documents table
         const existing = await query(
-            'SELECT metadata FROM documents WHERE agent_id = $1 AND metadata->>\'filename\' = $2 AND metadata->>\'contentHash\' = $3 AND user_id = $4 LIMIT 1',
-            [agentId, filename, contentHash, userId]
+            'SELECT metadata FROM documents WHERE campaign_id = $1 AND metadata->>\'filename\' = $2 AND metadata->>\'contentHash\' = $3 AND user_id = $4 LIMIT 1',
+            [campaignId, filename, contentHash, userId]
         );
 
         if (existing.rows.length > 0) {
@@ -31,8 +31,8 @@ export async function getContentVersion(agentId: string, contentHash: string, fi
         }
 
         const highest = await query(
-            'SELECT MAX((metadata->>\'contentVersion\')::int) as max_v FROM documents WHERE agent_id = $1 AND metadata->>\'filename\' = $2 AND user_id = $3',
-            [agentId, filename, userId]
+            'SELECT MAX((metadata->>\'contentVersion\')::int) as max_v FROM documents WHERE campaign_id = $1 AND metadata->>\'filename\' = $2 AND user_id = $3',
+            [campaignId, filename, userId]
         );
 
         const maxV = (highest.rows[0] as any)?.max_v;
@@ -182,14 +182,14 @@ export async function parseFile(fileBuffer: Buffer, fileType: string, fileName: 
     throw new Error(`Unsupported file type: ${fileType}`);
 }
 
-export const processUpload = async (agentId: string, file: Express.Multer.File, userId?: string) => {
-    const room = userId || agentId;
+export const processUpload = async (campaignId: string, file: Express.Multer.File, userId?: string) => {
+    const room = userId || campaignId;
     try {
         notifyRoom(room, SOCKET_EVENTS.TRAINING_PROGRESS, { status: 'PARSING', progress: 10, message: `Extracting knowledge from ${file.originalname}...` });
 
         const content = await parseFile(file.buffer, file.mimetype || file.originalname.split('.').pop() || '', file.originalname);
         const contentHash = generateContentHash(content);
-        const contentVersion = await getContentVersion(agentId, contentHash, file.originalname, userId);
+        const contentVersion = await getContentVersion(campaignId, contentHash, file.originalname, userId);
 
         notifyRoom(room, SOCKET_EVENTS.TRAINING_PROGRESS, { status: 'CHUNKING', progress: 30, message: 'Optimizing knowledge for neural retrieval...' });
         const chunks = chunkText(content);
@@ -198,7 +198,7 @@ export const processUpload = async (agentId: string, file: Express.Multer.File, 
 
         let current = 0;
         for (const chunk of chunks) {
-            await storeDocument(agentId, chunk.text, {
+            await storeDocument(campaignId, chunk.text, {
                 filename: file.originalname,
                 contentHash,
                 contentVersion,
@@ -227,8 +227,8 @@ export const processUpload = async (agentId: string, file: Express.Multer.File, 
     }
 };
 
-export const getContextForQuery = async (agentId: string, queryText: string, userId?: string) => {
-    const similarDocs = await hybridSearch(agentId, queryText, 3, userId);
+export const getContextForQuery = async (campaignId: string, queryText: string, userId?: string) => {
+    const similarDocs = await hybridSearch(campaignId, queryText, 3, userId);
     return {
         text: similarDocs.map(d => d.content).join('\n\n---\n\n'),
         sources: Array.from(new Set(similarDocs.map(d => (d.metadata as any)?.filename).filter(Boolean)))

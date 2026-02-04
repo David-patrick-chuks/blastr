@@ -8,9 +8,9 @@ export class YoutubeService {
     /**
      * Extracts content from a YouTube video and stores it in the knowledge base.
      */
-    async processYoutubeUrl(agentId: string, youtubeUrl: string, userId: string) {
+    async processYoutubeUrl(campaignId: string, youtubeUrl: string, userId: string) {
         try {
-            logger.info(`Processing YouTube URL: ${youtubeUrl} for agent: ${agentId}`);
+            logger.info(`Processing YouTube URL: ${youtubeUrl} for campaign: ${campaignId}`);
 
             const systemPrompt = `You are an AI assistant tasked with creating a clean transcript and summary of YouTube video content for a RAG system. Extract spoken words and key visual details verbatim.`;
 
@@ -45,7 +45,7 @@ export class YoutubeService {
             // Chunk and store
             const chunks = chunkText(content);
             for (const chunk of chunks) {
-                await storeDocument(agentId, chunk.text, {
+                await storeDocument(campaignId, chunk.text, {
                     source: 'youtube',
                     url: youtubeUrl,
                     ...chunk.metadata as any

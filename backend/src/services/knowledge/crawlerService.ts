@@ -8,9 +8,9 @@ export class CrawlerService {
     /**
      * Crawls a website URL, extracts meaningful text, and stores it in the knowledge base.
      */
-    async crawlUrl(agentId: string, url: string, userId: string) {
+    async crawlUrl(campaignId: string, url: string, userId: string) {
         try {
-            logger.info(`Crawling URL: ${url} for agent: ${agentId}`);
+            logger.info(`Crawling URL: ${url} for campaign: ${campaignId}`);
 
             // Fetch HTML content
             const response = await fetch(url, {
@@ -48,7 +48,7 @@ export class CrawlerService {
             // Chunk and store
             const chunks = chunkText(extractedContent);
             for (const chunk of chunks) {
-                await storeDocument(agentId, chunk.text, {
+                await storeDocument(campaignId, chunk.text, {
                     source: 'website',
                     url: url,
                     ...chunk.metadata as any
