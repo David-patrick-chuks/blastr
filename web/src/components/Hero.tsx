@@ -2,6 +2,18 @@ export function Hero({ onAuth }: { onAuth: () => void }) {
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:64px_64px]" />
+
+      {/* Vibe Image - Hidden Visual */}
+      <div className="absolute inset-0 opacity-40 pointer-events-none animate-in fade-in duration-1000">
+        <img
+          src="/hero-image.jpeg"
+          alt="Aisha Vibe"
+          className="w-full h-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#09090b]/80 via-transparent to-[#09090b]/80" />
+      </div>
+
       <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-transparent" />
 
       <div className="absolute top-0 left-1/4 w-px h-48 bg-gradient-to-b from-blue-500/50 to-transparent" />
@@ -11,7 +23,7 @@ export function Hero({ onAuth }: { onAuth: () => void }) {
         <div className="flex justify-center mb-8">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 border border-zinc-700 bg-zinc-900/80 text-sm text-zinc-300">
             <span className="w-1.5 h-1.5 bg-blue-400 animate-pulse" />
-            BlastAgent AI
+            BLASTR AI
           </span>
         </div>
 
