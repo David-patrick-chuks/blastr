@@ -7,10 +7,6 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "tsx src/server.ts",
-    "docker:build": "docker build -t gaia-backend .",
-    "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down",
-    "docker:logs": "docker-compose logs -f backend",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

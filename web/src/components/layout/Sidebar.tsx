@@ -39,7 +39,7 @@ export function Sidebar({ onLogout, onMobileClose }: SidebarProps) {
                         <div className="w-8 h-8 bg-blue-500 rounded-sm flex items-center justify-center">
                             <Sparkles className="w-5 h-5 text-zinc-900" />
                         </div>
-                        <span className="font-bold tracking-tight text-xl uppercase italic">BlastAgent</span>
+                        <span className="font-bold tracking-tight text-xl uppercase italic">Blastr / HQ</span>
                     </div>
                     {/* Mobile Close Button */}
                     <button
@@ -53,49 +53,49 @@ export function Sidebar({ onLogout, onMobileClose }: SidebarProps) {
                 <nav className="space-y-1">
                     <SidebarItem
                         icon={LayoutDashboard}
-                        label="Overview"
+                        label="Command Center"
                         active={getActiveTab() === "overview"}
                         onClick={() => handleNavigate('/dashboard/overview')}
                     />
                     <SidebarItem
                         icon={Mail}
-                        label="Campaigns"
+                        label="Operations"
                         active={getActiveTab() === "campaigns"}
                         onClick={() => handleNavigate('/dashboard/campaigns')}
                     />
                     <SidebarItem
                         icon={PenTool}
-                        label="Composer"
+                        label="AI Studio"
                         active={getActiveTab() === "studio"}
                         onClick={() => handleNavigate('/dashboard/studio')}
                     />
                     <SidebarItem
                         icon={Zap}
-                        label="Extractor"
+                        label="Recipient Intel"
                         active={getActiveTab() === "deploy"}
                         onClick={() => handleNavigate('/dashboard/deploy')}
                     />
                     <SidebarItem
                         icon={Sparkles}
-                        label="Bots"
+                        label="Transmission Bots"
                         active={getActiveTab() === "bots"}
                         onClick={() => handleNavigate('/dashboard/bots')}
                     />
                     <SidebarItem
                         icon={Activity}
-                        label="Analytics"
+                        label="Performance Metrics"
                         active={getActiveTab() === "analytics"}
                         onClick={() => handleNavigate('/dashboard/analytics')}
                     />
                     <SidebarItem
                         icon={User}
-                        label="Profile"
+                        label="My Identity"
                         active={getActiveTab() === "profile"}
                         onClick={() => handleNavigate('/dashboard/profile')}
                     />
                     <SidebarItem
                         icon={Settings}
-                        label="Settings"
+                        label="System Config"
                         active={getActiveTab() === "settings"}
                         onClick={() => handleNavigate('/dashboard/settings')}
                     />
