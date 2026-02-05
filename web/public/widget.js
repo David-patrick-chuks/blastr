@@ -1,7 +1,7 @@
 (function () {
     const script = document.getElementById('gaia-agent-widget');
     const agentId = script.getAttribute('data-agent-id');
-    const backendUrl = 'http://localhost:3000/api'; // In prod, this would be dynamic
+    const backendUrl = 'https://blastr-backend.vercel.app/api'; // Updated for production
 
     // Create Styles
     const style = document.createElement('style');

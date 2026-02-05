@@ -125,7 +125,7 @@ export const initiateOAuth = async (req: Request, res: Response) => {
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: provider as any,
             options: {
-                redirectTo: (redirectTo as string) || 'https://blastr.vercel.app/auth/callback'
+                redirectTo: (redirectTo as string) || 'https://blastr-web.vercel.app/auth/callback'
             }
         });
 
