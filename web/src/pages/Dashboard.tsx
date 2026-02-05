@@ -4,7 +4,7 @@ import { OverviewView } from "./dashboard/OverviewView";
 import { CampaignsView } from "./dashboard/CampaignsView";
 import { StudioView } from "./dashboard/StudioView";
 import { DeployView } from "./dashboard/DeployView";
-import { KnowledgeView } from "./dashboard/KnowledgeView";
+import { BotsView } from "./dashboard/BotsView";
 import { AnalyticsView } from "./dashboard/AnalyticsView";
 import { SettingsView } from "./dashboard/SettingsView";
 import { ProfileView } from "./dashboard/ProfileView";
@@ -22,7 +22,7 @@ export function Dashboard({ onLogout }: DashboardProps) {
                 <Route path="/campaigns" element={<CampaignsView />} />
                 <Route path="/studio" element={<StudioView />} />
                 <Route path="/deploy" element={<DeployView />} />
-                <Route path="/knowledge" element={<KnowledgeView />} />
+                <Route path="/bots" element={<BotsView />} />
                 <Route path="/analytics" element={<AnalyticsView />} />
                 <Route path="/settings" element={<SettingsView />} />
                 <Route path="/profile" element={<ProfileView />} />

@@ -4,7 +4,6 @@ import {
     Mail,
     PenTool,
     Zap,
-    Database,
     Activity,
     Settings,
     LogOut,
@@ -77,10 +76,10 @@ export function Sidebar({ onLogout, onMobileClose }: SidebarProps) {
                         onClick={() => handleNavigate('/dashboard/deploy')}
                     />
                     <SidebarItem
-                        icon={Database}
-                        label="Knowledge"
-                        active={getActiveTab() === "knowledge"}
-                        onClick={() => handleNavigate('/dashboard/knowledge')}
+                        icon={Sparkles}
+                        label="Bots"
+                        active={getActiveTab() === "bots"}
+                        onClick={() => handleNavigate('/dashboard/bots')}
                     />
                     <SidebarItem
                         icon={Activity}

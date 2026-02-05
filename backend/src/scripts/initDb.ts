@@ -65,17 +65,6 @@ CREATE TABLE IF NOT EXISTS campaigns (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Documents (Knowledge) Table
-CREATE TABLE IF NOT EXISTS documents (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    campaign_id UUID REFERENCES campaigns(id) ON DELETE CASCADE,
-    user_id UUID REFERENCES profiles(id),
-    content TEXT NOT NULL,
-    metadata JSONB DEFAULT '{}',
-    embedding vector(768), -- Gemini text-embedding-004 is 768
-    created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
 -- Messages Table
 CREATE TABLE IF NOT EXISTS messages (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -96,88 +85,6 @@ CREATE TABLE IF NOT EXISTS activity_logs (
     details TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
-
--- Semantic search procedure
-CREATE OR REPLACE FUNCTION match_documents (
-  query_embedding vector(768),
-  match_threshold float,
-  match_count int,
-  p_campaign_id uuid,
-  p_user_id uuid
-)
-RETURNS TABLE (
-  id uuid,
-  content text,
-  metadata jsonb,
-  similarity float
-)
-LANGUAGE plpgsql
-AS $$
-BEGIN
-  RETURN QUERY
-  SELECT
-    d.id,
-    d.content,
-    d.metadata,
-    1 - (d.embedding <=> query_embedding) AS similarity
-  FROM documents d
-  WHERE d.campaign_id = p_campaign_id 
-    AND d.user_id = p_user_id
-    AND 1 - (d.embedding <=> query_embedding) > match_threshold
-  ORDER BY d.embedding <=> query_embedding
-  LIMIT match_count;
-END;
-$$;
-
--- Hybrid search procedure
-CREATE OR REPLACE FUNCTION hybrid_search (
-  query_text text,
-  query_embedding vector(768),
-  p_campaign_id uuid,
-  match_count int,
-  p_user_id uuid
-)
-RETURNS TABLE (
-  id uuid,
-  content text,
-  metadata jsonb,
-  similarity float
-)
-LANGUAGE plpgsql
-AS $$
-BEGIN
-  RETURN QUERY
-  SELECT
-    d.id,
-    d.content,
-    d.metadata,
-    1 - (d.embedding <=> query_embedding) AS similarity
-  FROM documents d
-  WHERE d.campaign_id = p_campaign_id 
-    AND d.user_id = p_user_id
-    AND (
-      d.content ILIKE '%' || query_text || '%'
-      OR 1 - (d.embedding <=> query_embedding) > 0.5
-    )
-  ORDER BY d.embedding <=> query_embedding
-  LIMIT match_count;
-END;
-$$;
-
--- Helper procedures
-CREATE OR REPLACE FUNCTION get_campaign_documents(p_campaign_id uuid, p_user_id uuid)
-RETURNS SETOF documents AS $$
-BEGIN
-    RETURN QUERY SELECT * FROM documents WHERE campaign_id = p_campaign_id AND user_id = p_user_id;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION delete_document(p_id uuid, p_user_id uuid)
-RETURNS void AS $$
-BEGIN
-    DELETE FROM documents WHERE id = p_id AND user_id = p_user_id;
-END;
-$$ LANGUAGE plpgsql;
 `;
 
 export const initDb = async () => {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Modal } from "../Modal";
 import type { Campaign } from "../../types/index";
+import { apiClient } from "../../services/index";
 
 export function CampaignModal({ isOpen, onClose, onSave, agent: campaign }: { isOpen: boolean, onClose: () => void, onSave: (campaign: Partial<Campaign>) => Promise<void>, agent: Campaign | null }) {
     const [formData, setFormData] = useState<Partial<Campaign>>({
@@ -8,9 +9,15 @@ export function CampaignModal({ isOpen, onClose, onSave, agent: campaign }: { is
         role: "",
         system_instruction: "",
         template: "",
-        status: "Active"
+        status: "Active",
+        agent_id: ""
     });
+    const [bots, setBots] = useState<any[]>([]);
     const [saving, setSaving] = useState(false);
+
+    useEffect(() => {
+        apiClient.get('/agents').then((res: any) => setBots(res));
+    }, []);
 
     useEffect(() => {
         if (campaign) {
@@ -19,7 +26,8 @@ export function CampaignModal({ isOpen, onClose, onSave, agent: campaign }: { is
                 role: campaign.role,
                 system_instruction: campaign.system_instruction || "",
                 template: campaign.template || "",
-                status: campaign.status
+                status: campaign.status,
+                agent_id: campaign.agent_id || ""
             });
         } else {
             setFormData({
@@ -27,10 +35,11 @@ export function CampaignModal({ isOpen, onClose, onSave, agent: campaign }: { is
                 role: "",
                 system_instruction: "",
                 template: "",
-                status: "Active"
+                status: "Active",
+                agent_id: bots.length > 0 ? bots[0].id : ""
             });
         }
-    }, [campaign, isOpen]);
+    }, [campaign, isOpen, bots]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -61,16 +70,31 @@ export function CampaignModal({ isOpen, onClose, onSave, agent: campaign }: { is
                         />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-[10px] font-mono text-zinc-500 uppercase">Subject Line / Purpose</label>
-                        <input
+                        <label className="text-[10px] font-mono text-zinc-500 uppercase">Transmission Bot</label>
+                        <select
                             required
-                            type="text"
-                            value={formData.role}
-                            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                            placeholder="e.g. Exclusive Product Update"
-                            className="w-full bg-zinc-950 border border-zinc-800 focus:border-blue-500/50 outline-none px-4 py-2 text-sm transition-all"
-                        />
+                            value={formData.agent_id}
+                            onChange={(e) => setFormData({ ...formData, agent_id: e.target.value })}
+                            className="w-full bg-zinc-950 border border-zinc-800 focus:border-blue-500/50 outline-none px-4 py-2 text-sm transition-all text-blue-400"
+                        >
+                            <option value="" disabled>Select a Bot</option>
+                            {bots.map(bot => (
+                                <option key={bot.id} value={bot.id}>{bot.name} ({bot.email})</option>
+                            ))}
+                        </select>
                     </div>
+                </div>
+
+                <div className="space-y-2">
+                    <label className="text-[10px] font-mono text-zinc-500 uppercase">Subject Line / Purpose</label>
+                    <input
+                        required
+                        type="text"
+                        value={formData.role}
+                        onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                        placeholder="e.g. Exclusive Product Update"
+                        className="w-full bg-zinc-950 border border-zinc-800 focus:border-blue-500/50 outline-none px-4 py-2 text-sm transition-all"
+                    />
                 </div>
 
                 <div className="space-y-2">

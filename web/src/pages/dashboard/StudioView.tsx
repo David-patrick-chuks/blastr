@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Send, User, Sparkles, ChevronDown, FileText } from "lucide-react";
+import { Send, Bot, User, Sparkles, Loader2, Info, LayoutDashboard, ChevronRight, ChevronDown } from "lucide-react";
 import { campaignService, authService } from "../../services/index";
 import { useSocket } from "../../hooks/useSocket";
 import type { Campaign, ChatMessage } from "../../types/index";
@@ -175,23 +175,6 @@ export function StudioView() {
                                 <div className="max-w-[80%]">
                                     <div className={`p-4 ${msg.role === 'assistant' ? 'bg-zinc-900/80 border border-zinc-800' : 'bg-blue-500 text-zinc-900 font-medium whitespace-pre-wrap'}`}>
                                         <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.text}</p>
-
-                                        {msg.sources && msg.sources.length > 0 && (
-                                            <div className="mt-4 pt-3 border-t border-zinc-800">
-                                                <div className="flex items-center gap-1.5 mb-2">
-                                                    <Sparkles className="w-3 h-3 text-blue-500" />
-                                                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">Indexed Context</span>
-                                                </div>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {msg.sources.map((source, idx) => (
-                                                        <div key={idx} className="flex items-center gap-1.5 px-2 py-1 bg-zinc-950 border border-zinc-800 text-[10px] text-zinc-400 font-mono">
-                                                            <FileText className="w-3 h-3 text-zinc-500" />
-                                                            {source}
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
                                     </div>
                                     <span className="text-[10px] font-mono text-zinc-600 mt-2 block uppercase">{msg.role === 'assistant' ? 'COMPOSER' : 'USER'}</span>
                                 </div>
