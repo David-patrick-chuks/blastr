@@ -32,7 +32,7 @@ export function AnalyticsView() {
         <div className="space-y-6 md:space-y-8">
             <div>
                 <h2 className="text-xl font-bold mb-2">System Analytics</h2>
-                <p className="text-zinc-500 text-sm">Deep insights into kernel performance and Gemini 2.0 Flash utilization.</p>
+                <p className="text-zinc-500 text-sm">Deep insights into kernel performance and Gemini 3.0 Flash utilization.</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
@@ -86,7 +86,7 @@ export function AnalyticsView() {
                     <div className="space-y-4 text-xs">
                         <div className="flex justify-between border-b border-zinc-800/50 pb-2">
                             <span className="text-white">Model Tier</span>
-                            <span className="text-blue-500">GEMINI 2.0 FLASH</span>
+                            <span className="text-blue-500">GEMINI 3.0 FLASH</span>
                         </div>
                         <div className="flex justify-between border-b border-zinc-800/50 pb-2">
                             <span className="text-white">Context Window</span>

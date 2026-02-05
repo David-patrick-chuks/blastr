@@ -189,7 +189,7 @@ export function SettingsView() {
                         <div className="space-y-4 p-4 bg-zinc-950/30 border border-zinc-800/50">
                             <div className="flex justify-between items-center text-xs">
                                 <div>
-                                    <div className="font-bold text-white">Gemini 2.0 Flash Key</div>
+                                    <div className="font-bold text-white">Gemini 3.0 Flash Key</div>
                                     <div className="text-[10px] font-mono text-zinc-500">Primary reasoning engine</div>
                                 </div>
                                 <button

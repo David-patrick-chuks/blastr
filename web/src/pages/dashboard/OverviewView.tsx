@@ -84,7 +84,7 @@ export function OverviewView() {
                         </div>
                         <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
                             <span className="text-[10px] text-zinc-500 uppercase">Model Version</span>
-                            <span className="text-sm text-zinc-300">Gemini 2.0 Flash</span>
+                            <span className="text-sm text-zinc-300">Gemini 3.0 Flash</span>
                         </div>
                         <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
                             <span className="text-[10px] text-zinc-500 uppercase">Engine Health</span>

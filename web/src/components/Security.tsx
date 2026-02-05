@@ -1,4 +1,4 @@
-import { Check, X } from "lucide-react";
+import { Check } from "lucide-react";
 
 export function Security() {
   return (
@@ -16,7 +16,7 @@ export function Security() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-zinc-700">
+        <div className="grid grid-cols-1 gap-px bg-zinc-700">
           <div className="relative bg-zinc-950 p-4 md:p-6 border-l-2 border-l-blue-500">
             <div className="absolute -top-px -right-px w-4 h-4 border-r border-t border-blue-500/50" />
 
@@ -45,31 +45,6 @@ export function Security() {
             </ul>
           </div>
 
-          <div className="relative bg-zinc-950 p-4 md:p-6 border-l-2 border-l-zinc-600">
-            <div className="absolute -top-px -right-px w-4 h-4 border-r border-t border-zinc-600/50" />
-
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 border border-zinc-600 flex items-center justify-center">
-                <X className="w-4 h-4 text-zinc-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-zinc-300">
-                Current Status
-              </h3>
-            </div>
-            <ul className="space-y-3">
-              {[
-                "Stable: Production-ready distribution",
-                "Standard Gemini safety filters active",
-                "Email-optimized personalization logic",
-                "Standard SMTP protocol encryption",
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-zinc-400 text-sm md:text-base">
-                  <X className="w-4 h-4 text-zinc-500 mt-1 flex-shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
         <div className="relative mt-12 border border-zinc-800 bg-zinc-950">
@@ -88,7 +63,7 @@ export function Security() {
               <div className="text-[10px] text-zinc-600 mb-1 font-mono uppercase tracking-widest">
                 AI Engine
               </div>
-              <div className="text-zinc-200 font-mono text-sm">Gemini 2.0</div>
+              <div className="text-zinc-200 font-mono text-sm">Gemini 3.0</div>
             </div>
             <div className="bg-zinc-950 p-4">
               <div className="text-[10px] text-zinc-600 mb-1 font-mono uppercase tracking-widest">
@@ -111,6 +86,6 @@ export function Security() {
           </div>
         </div>
       </div>
-    </section>
+    </section >
   );
 }

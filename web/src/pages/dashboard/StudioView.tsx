@@ -6,7 +6,7 @@ import type { Campaign, ChatMessage } from "../../types/index";
 
 export function StudioView() {
     const [messages, setMessages] = useState<ChatMessage[]>([
-        { role: 'assistant', text: 'Hello! I am your BlastAgent AI composer. Select a campaign to start refining your email templates.' }
+        { role: 'assistant', text: 'Hello! I am your BLASTR AI composer. Select a campaign to start refining your email templates.' }
     ]);
     const [input, setInput] = useState('');
     const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -158,7 +158,7 @@ export function StudioView() {
                     )}
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono text-zinc-600 uppercase">Engine: Gemini 2.0 Flash</span>
+                    <span className="text-[10px] font-mono text-zinc-600 uppercase">Engine: Gemini 3.0 Flash</span>
                     <div className={`w-1.5 h-1.5 rounded-full ${loading ? 'bg-amber-500 animate-ping' : 'bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]'}`} />
                 </div>
             </div>

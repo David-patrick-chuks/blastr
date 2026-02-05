@@ -35,7 +35,7 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  if (loading) return <div className="min-h-screen bg-zinc-950 flex items-center justify-center font-mono text-blue-500">INIT_BLASTAGENT_CORE...</div>;
+  if (loading) return <div className="min-h-screen bg-zinc-950 flex items-center justify-center font-mono text-blue-500">INIT_BLASTR_CORE...</div>;
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-blue-500/30">

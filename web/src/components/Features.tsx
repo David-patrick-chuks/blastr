@@ -12,7 +12,7 @@ const features = [
     icon: Bot,
     title: "AI Personalization",
     description:
-      "Beyond generic templates. BLASTR crafts unique, personalized emails for every recipient using Gemini 2.0 Flash.",
+      "Beyond generic templates. BLASTR crafts unique, personalized emails for every recipient using Gemini 3.0 Flash.",
   },
   {
     icon: Zap,

@@ -20,7 +20,7 @@ export function SMTPGuideView() {
                         <div className="w-8 h-8 border border-blue-500 flex items-center justify-center text-blue-400 font-mono text-sm">
                             B
                         </div>
-                        <span className="text-lg font-bold font-mono tracking-tighter">BLASTAGENT</span>
+                        <span className="text-lg font-bold font-mono tracking-tighter">BLASTR</span>
                     </div>
                 </div>
             </header>
@@ -31,7 +31,7 @@ export function SMTPGuideView() {
                         SMTP App Passwords Guide
                     </h1>
                     <p className="text-zinc-500 text-lg">
-                        Learn how to securely connect your email accounts to BlastAgent AI using App Passwords.
+                        Learn how to securely connect your email accounts to BLASTR AI using App Passwords.
                     </p>
                 </div>
 
@@ -60,7 +60,7 @@ export function SMTPGuideView() {
                                 Modern email providers (Gmail, Outlook, iCloud) no longer allow signing in with your primary password for security reasons (MTAs/Bots).
                             </p>
                             <p>
-                                <strong className="text-white">App Passwords</strong> are unique, 16-character codes that allow BlastAgent to send emails on your behalf without ever knowing your real password. They can be revoked at any time.
+                                <strong className="text-white">App Passwords</strong> are unique, 16-character codes that allow BLASTR to send emails on your behalf without ever knowing your real password. They can be revoked at any time.
                             </p>
                         </div>
                     </section>
@@ -81,7 +81,7 @@ export function SMTPGuideView() {
                                         "Navigate to 'Security' on the left sidebar.",
                                         "Enable '2-Step Verification' if it isn't already.",
                                         "Search for 'App Passwords' in the top search bar.",
-                                        "Create a new app named 'BlastAgent' and copy the 16-character code."
+                                        "Create a new app named 'BLASTR' and copy the 16-character code."
                                     ],
                                     link: "https://myaccount.google.com/apppasswords"
                                 },
@@ -152,8 +152,8 @@ export function SMTPGuideView() {
 
             <footer className="py-12 border-t border-zinc-900 text-center">
                 <p className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest leading-relaxed">
-                    BlastAgent AI — Secure Transmission Engine <br />
-                    Powered by Google Gemini 2.0
+                    BLASTR AI — Secure Transmission Engine <br />
+                    Powered by Google Gemini 3.0
                 </p>
             </footer>
         </div>
