@@ -48,11 +48,11 @@ class EmailServiceClass {
             return false;
         }
 
-        const fromUser = config?.user || 'no-reply@blastagent.ai';
+        const fromUser = config?.user || 'no-reply@blastr.ai';
 
         try {
             const info = await transporter.sendMail({
-                from: options.from || `"BlastAgent AI" <${fromUser}>`,
+                from: options.from || `"BLASTR" <${fromUser}>`,
                 to: options.to,
                 subject: options.subject,
                 text: options.text,
