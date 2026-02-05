@@ -35,13 +35,42 @@ BLASTR is not just a wrapper; it's deeply integrated with the Gemini ecosystem t
 
 ---
 
-## 🏗️ Tech Stack
+## 🏗️ Architecture
 
-- **Frontend:** React 19, TypeScript, TailwindCSS, Vite
-- **Backend:** Node.js, Express, Socket.io
-- **AI Engine:** Google GenAI SDK (`@google/generative-ai`)
-- **Database:** Supabase / PostgreSQL
-- **Design:** Minimalist "Hacker-Dark" aesthetic
+```mermaid
+graph TD
+    User[User] -->|Uploads Image| Web[React Frontend]
+    Web -->|Socket.io Stream| Backend[Node.js Server]
+    Backend -->|Vision Request| Gemini[Gemini 1.5 Flash]
+    Gemini -->|JSON Response| Backend
+    Backend -->|Parsed Emails| DB[(Supabase Postges)]
+    
+    subgraph "Agentic Core"
+    Backend -->|Context + Template| GeminiReasoning[Gemini Reasoning]
+    GeminiReasoning -->|Variations| Backend
+    Backend -->|SMTP Protocol| EmailServer[SMTP Relay]
+    end
+```
+
+## 💻 Code Implementation
+
+BLASTR utilizes the `GoogleGenAI` SDK for robust streaming and multimodal interactions:
+
+```typescript
+// Streaming content for real-time drafting
+async *generateContentStream(prompt: string, options: any = {}) {
+    const ai = this.getCurrentClient();
+    const stream = await ai.models.generateContentStream({
+        model: GEMINI_MODELS.FLASH_1_5,
+        contents: this.formatContents(prompt),
+        config: { temperature: 0.7 }
+    });
+
+    for await (const chunk of stream.stream) {
+        if (chunk.text()) yield chunk.text();
+    }
+}
+```
 
 ## 🚀 Getting Started
 
@@ -78,7 +107,7 @@ BLASTR is not just a wrapper; it's deeply integrated with the Gemini ecosystem t
 ## 🔮 Future Roadmap
 
 - **Gemini 2.0 Pro Integration:** For complex multi-turn negotiation agents.
-- **Audio Mode:** Voice-command campaign management.
+- **Audio Mode:** Voice-command campaign management using multimodal audio inputs.
 - **Video Personalization:** Generating personalized video intros using Gemini's future video generation capabilities.
 
 ---
