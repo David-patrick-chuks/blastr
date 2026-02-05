@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Cpu, Plus, Search, Trash2, CheckCircle2, AlertCircle } from "lucide-react";
+import { Cpu, Plus, Search, Trash2, CheckCircle2, AlertCircle, Edit } from "lucide-react";
 import { InfoModal, ConfirmModal } from "../../components/Modal";
+import { BotModal } from "../../components/agents/BotModal";
 import { apiClient } from "../../services/index";
 import type { Agent } from "../../types/index";
 
@@ -11,6 +12,7 @@ export function BotsView() {
     const [currentBot, setCurrentBot] = useState<Agent | null>(null);
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [infoModalOpen, setInfoModalOpen] = useState(false);
+    const [botModalOpen, setBotModalOpen] = useState(false);
     const [infoTitle, setInfoTitle] = useState("");
     const [infoMessage, setInfoMessage] = useState("");
     const [verifyingId, setVerifyingId] = useState<string | null>(null);
@@ -34,6 +36,32 @@ export function BotsView() {
         setInfoTitle(title);
         setInfoMessage(message);
         setInfoModalOpen(true);
+    };
+
+    const handleCreateClick = () => {
+        setCurrentBot(null);
+        setBotModalOpen(true);
+    };
+
+    const handleEditClick = (bot: Agent) => {
+        setCurrentBot(bot);
+        setBotModalOpen(true);
+    };
+
+    const handleSaveBot = async (formData: Partial<Agent>) => {
+        try {
+            if (currentBot) {
+                const updated = await apiClient.put<Agent>(`/agents/${currentBot.id}`, formData);
+                setBots(bots.map(b => b.id === updated.id ? updated : b));
+                showInfo("Success", "Bot identity updated.");
+            } else {
+                const created = await apiClient.post<Agent>(`/agents`, formData);
+                setBots([created, ...bots]);
+                showInfo("Success", "New transmission bot initialized.");
+            }
+        } catch (error) {
+            showInfo("Error", "Failed to save bot configuration.");
+        }
     };
 
     const handleVerifySmtp = async (botId: string) => {
@@ -82,7 +110,7 @@ export function BotsView() {
                     <p className="text-zinc-500 text-sm">Manage your SMTP identities and sending limits.</p>
                 </div>
                 <button
-                    onClick={() => showInfo("Feature Coming", "Bot creation is currently optimized through the Campaign flow. Dedicated bot creation coming soon.")}
+                    onClick={handleCreateClick}
                     className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-400 text-zinc-900 font-bold text-sm transition-colors cursor-pointer"
                 >
                     <Plus className="w-4 h-4" />
@@ -173,6 +201,12 @@ export function BotsView() {
                                                     {verifyingId === bot.id ? "Verifying..." : "Verify Connection"}
                                                 </button>
                                                 <button
+                                                    onClick={() => handleEditClick(bot)}
+                                                    className="p-1.5 hover:text-white transition-colors"
+                                                >
+                                                    <Edit className="w-3.5 h-3.5" />
+                                                </button>
+                                                <button
                                                     onClick={() => handleDeleteClick(bot)}
                                                     className="p-1.5 hover:text-red-400 transition-colors"
                                                 >
@@ -193,6 +227,13 @@ export function BotsView() {
                 onClose={() => setInfoModalOpen(false)}
                 title={infoTitle}
                 message={infoMessage}
+            />
+
+            <BotModal
+                isOpen={botModalOpen}
+                onClose={() => setBotModalOpen(false)}
+                onSave={handleSaveBot}
+                bot={currentBot}
             />
 
             <ConfirmModal

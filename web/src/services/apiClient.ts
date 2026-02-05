@@ -73,6 +73,14 @@ class ApiClient {
         });
     }
 
+    async put<T>(endpoint: string, body?: any, options: RequestInit = {}): Promise<T> {
+        return this.fetch<T>(endpoint, {
+            ...options,
+            method: 'PUT',
+            body: body ? JSON.stringify(body) : undefined,
+        });
+    }
+
     async delete<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
         return this.fetch<T>(endpoint, { ...options, method: 'DELETE' });
     }
