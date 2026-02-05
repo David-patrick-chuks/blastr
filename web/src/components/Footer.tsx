@@ -11,8 +11,8 @@ export function Footer() {
             <div className="w-8 h-8 border border-blue-500 flex items-center justify-center text-blue-400 font-mono text-sm">
               B
             </div>
-            <span className="text-xl font-semibold text-white font-mono">
-              blastagent
+            <span className="text-xl font-semibold text-white font-mono uppercase italic tracking-tighter">
+              blastr
             </span>
           </div>
 
@@ -39,7 +39,7 @@ export function Footer() {
         <div className="mt-8 pt-8 border-t border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-zinc-600">
           <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
             <p className="font-mono uppercase tracking-widest text-[10px]">
-              © {new Date().getFullYear()} BLASTAGENT — High-Impact AI Emailing
+              © {new Date().getFullYear()} BLASTR — High-Impact AI Emailing
             </p>
             <a href="/guide/smtp" className="text-zinc-500 hover:text-blue-400 transition-colors uppercase font-mono text-[10px]">
               SMTP Setup Guide

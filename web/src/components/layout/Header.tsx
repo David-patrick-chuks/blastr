@@ -33,7 +33,7 @@ export function Header() {
     };
 
     return (
-        <header className="h-20 border-b border-zinc-900 flex items-center justify-between px-4 md:px-8 bg-zinc-950/50 backdrop-blur flex-shrink-0">
+        <header className="h-16 md:h-20 border-b border-zinc-900 flex items-center justify-between px-4 md:px-8 bg-zinc-950/50 backdrop-blur flex-shrink-0">
             <div className="flex-1">
                 <h1 className="text-lg md:text-xl font-bold tracking-tight truncate font-mono">
                     {getActiveTab()}

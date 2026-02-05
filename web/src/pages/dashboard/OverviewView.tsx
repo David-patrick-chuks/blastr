@@ -29,8 +29,8 @@ export function OverviewView() {
     if (loading) return <div className="p-8 font-mono text-zinc-500">Loading system metrics...</div>;
 
     return (
-        <div className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="space-y-6 md:space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 <StatCard
                     icon={Activity}
                     label="TOTAL TRANSMISSIONS"
@@ -53,8 +53,8 @@ export function OverviewView() {
                 />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="border border-zinc-800 bg-zinc-900/40 p-6 min-h-[400px]">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+                <div className="border border-zinc-800 bg-zinc-900/40 p-4 md:p-6 min-h-[400px]">
                     <div className="flex items-center justify-between mb-6">
                         <h3 className="text-sm font-mono text-zinc-500 uppercase tracking-widest">Recent Activity</h3>
                         <div className="px-2 py-0.5 border border-blue-500/20 text-[10px] text-blue-500 font-mono">LIVE</div>
@@ -75,7 +75,7 @@ export function OverviewView() {
                         )}
                     </div>
                 </div>
-                <div className="border border-zinc-800 bg-zinc-900/40 p-6">
+                <div className="border border-zinc-800 bg-zinc-900/40 p-4 md:p-6">
                     <h3 className="text-sm font-mono text-zinc-500 mb-8 uppercase tracking-widest">Platform Status</h3>
                     <div className="space-y-10 py-4 font-mono">
                         <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
@@ -99,14 +99,14 @@ export function OverviewView() {
 
 function StatCard({ icon: Icon, label, value, change, changeColor = "text-zinc-500" }: any) {
     return (
-        <div className="p-6 border border-zinc-800 bg-zinc-900/40 relative group overflow-hidden">
+        <div className="p-4 md:p-6 border border-zinc-800 bg-zinc-900/40 relative group overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-px bg-blue-500/20" />
             <div className="flex justify-between items-start mb-4">
                 <Icon className="w-5 h-5 text-blue-400" />
                 <span className={`text-[10px] font-mono ${changeColor}`}>{change}</span>
             </div>
-            <h3 className="text-zinc-500 text-sm font-mono mb-1 uppercase tracking-widest">{label}</h3>
-            <p className="text-3xl font-bold">{value}</p>
+            <h3 className="text-zinc-500 text-[10px] md:text-sm font-mono mb-1 uppercase tracking-widest">{label}</h3>
+            <p className="text-2xl md:text-3xl font-bold">{value}</p>
         </div>
     );
 }

@@ -12,7 +12,7 @@ const features = [
     icon: Bot,
     title: "AI Personalization",
     description:
-      "Beyond generic templates. BlastAgent AI crafts unique, personalized emails for every recipient using Gemini 2.0 Flash.",
+      "Beyond generic templates. BLASTR crafts unique, personalized emails for every recipient using Gemini 2.0 Flash.",
   },
   {
     icon: Zap,
@@ -56,8 +56,8 @@ export function Features() {
           <h2 className="text-3xl md:text-4xl font-bold text-white">
             High-Performance Email Orchestration
           </h2>
-          <p className="mt-4 text-lg text-zinc-400 max-w-2xl mx-auto">
-            BlastAgent AI is engineered for speed and precision. Scale your outreach with intelligent automation.
+          <p className="mt-4 text-base md:text-lg text-zinc-400 max-w-2xl mx-auto">
+            BLASTR is engineered for speed and precision. Scale your outreach with intelligent automation.
           </p>
         </div>
 

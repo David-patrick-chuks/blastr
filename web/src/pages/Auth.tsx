@@ -13,19 +13,19 @@ export function Auth({ onAuthComplete, onBack }: AuthProps) {
         <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-center items-center p-6 relative">
             <button
                 onClick={onBack}
-                className="absolute top-8 left-8 flex items-center gap-2 text-zinc-500 hover:text-blue-400 transition-colors"
+                className="absolute top-4 md:top-8 left-4 md:left-8 flex items-center gap-2 text-zinc-500 hover:text-blue-400 transition-colors z-10"
             >
                 <ArrowLeft className="w-4 h-4" />
-                Back to Home
+                <span className="text-sm font-mono tracking-tight font-bold">BACK</span>
             </button>
 
-            <div className="w-full max-w-md">
+            <div className="w-full max-w-md mt-12 md:mt-0">
                 <div className="text-center mb-10">
                     <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-zinc-700 bg-zinc-900/80 text-sm text-zinc-300 mb-6">
                         <span className="w-1.5 h-1.5 bg-blue-400 animate-pulse" />
-                        BlastAgent AI
+                        BLASTR AI
                     </div>
-                    <h2 className="text-4xl font-bold tracking-tight mb-2">
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-2 uppercase italic">
                         {isLogin ? "Welcome Back" : "Create Account"}
                     </h2>
                     <p className="text-zinc-500">
@@ -35,7 +35,7 @@ export function Auth({ onAuthComplete, onBack }: AuthProps) {
                     </p>
                 </div>
 
-                <div className="border border-zinc-800 bg-zinc-900/50 backdrop-blur p-8 relative">
+                <div className="border border-zinc-800 bg-zinc-900/50 backdrop-blur p-6 md:p-8 relative">
                     <div className="absolute -top-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
 
                     <div className="space-y-4">

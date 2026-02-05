@@ -104,17 +104,17 @@ export function BotsView() {
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h2 className="text-xl font-bold">AI Transmission Bots</h2>
+                    <h2 className="text-xl font-bold">AI Agents</h2>
                     <p className="text-zinc-500 text-sm">Manage your SMTP identities and sending limits.</p>
                 </div>
                 <button
                     onClick={handleCreateClick}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-400 text-zinc-900 font-bold text-sm transition-colors cursor-pointer"
+                    className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-400 text-zinc-900 font-bold text-sm transition-colors cursor-pointer w-full sm:w-auto"
                 >
                     <Plus className="w-4 h-4" />
-                    CREATE BOT
+                    CREATE AGENT
                 </button>
             </div>
 

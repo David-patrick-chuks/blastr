@@ -3,7 +3,7 @@ const steps = [
     number: "01",
     title: "Define your Campaign",
     description:
-      "Set your campaign goals, subject lines, and drafting templates. BlastAgent AI uses these to craft perfectly tuned, personalized messages.",
+      "Set your campaign goals, subject lines, and drafting templates. BLASTR uses these to craft perfectly tuned, personalized messages.",
     code: `/* Initializing Campaign */
 campaign.id = "q1_reachout";
 campaign.subject = "Exclusive Update";
@@ -23,7 +23,7 @@ campaign.sync(recipients);`,
     number: "03",
     title: "Blast High-Volume",
     description:
-      "Connect your SMTP and launch. Track delivered messages, open rates, and response metrics in real-time through the BlastAgent dashboard.",
+      "Connect your SMTP and launch. Track delivered messages, open rates, and response metrics in real-time through the BLASTR dashboard.",
     code: `// Initializing SMTP Transmission
 connecting_host: "smtp.gmail.com"
 status: "BLASTING" [3,248 SENT]
@@ -33,15 +33,15 @@ delivery_rate: 99.8%`,
 
 export function HowItWorks() {
   return (
-    <section className="relative py-24 border-t border-zinc-800 bg-zinc-900/50">
+    <section className="relative py-16 md:py-24 border-t border-zinc-800 bg-zinc-900/50">
       <div className="absolute left-1/2 top-0 w-px h-full bg-gradient-to-b from-zinc-800 via-zinc-800 to-transparent hidden lg:block" />
 
       <div className="max-w-5xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-white uppercase italic">
             The Ultimate Email Pipeline
           </h2>
-          <p className="mt-4 text-lg text-zinc-400 max-w-2xl mx-auto">
+          <p className="mt-4 text-base md:text-lg text-zinc-400 max-w-2xl mx-auto">
             The simplest way to orchestrate high-volume, Gemini-powered outreach.
           </p>
         </div>
@@ -78,7 +78,7 @@ export function HowItWorks() {
                 <div className="border border-zinc-800 bg-zinc-950">
                   <div className="flex items-center justify-between px-4 py-2 bg-zinc-900 border-b border-zinc-800">
                     <span className="text-xs text-zinc-600 font-mono">
-                      BLASTAGENT_AI
+                      BLASTR_ENGINE
                     </span>
                     <div className="flex gap-2">
                       <div className="w-2 h-2 bg-zinc-700" />

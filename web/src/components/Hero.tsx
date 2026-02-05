@@ -27,13 +27,13 @@ export function Hero({ onAuth }: { onAuth: () => void }) {
           </span>
         </div>
 
-        <h1 className="text-5xl md:text-7xl font-bold text-center tracking-tighter leading-[1.1]">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-center tracking-tighter leading-[1.1]">
           <span className="text-white">Blast High-Impact </span>
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
             AI Email
           </span>
           <br />
-          <span className="text-white">Campaigns</span>
+          <span className="text-white uppercase italic">Campaigns</span>
         </h1>
 
         <p className="mt-6 text-lg text-zinc-500 text-center max-w-3xl mx-auto font-mono uppercase tracking-[0.2em]">

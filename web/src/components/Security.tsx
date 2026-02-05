@@ -2,22 +2,22 @@ import { Check, X } from "lucide-react";
 
 export function Security() {
   return (
-    <section className="relative py-24 border-t border-zinc-800 bg-zinc-900/30">
-      <div className="absolute left-0 right-0 top-24 h-px bg-gradient-to-r from-transparent via-zinc-700/50 to-transparent" />
-      <div className="absolute left-0 right-0 bottom-24 h-px bg-gradient-to-r from-transparent via-zinc-700/50 to-transparent" />
+    <section className="relative py-16 md:py-24 border-t border-zinc-800 bg-zinc-900/30">
+      <div className="absolute left-0 right-0 top-12 md:top-24 h-px bg-gradient-to-r from-transparent via-zinc-700/50 to-transparent" />
+      <div className="absolute left-0 right-0 bottom-12 md:bottom-24 h-px bg-gradient-to-r from-transparent via-zinc-700/50 to-transparent" />
 
       <div className="relative max-w-5xl mx-auto px-6">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 md:mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white uppercase tracking-tighter">
             Hardened & Private
           </h2>
-          <p className="mt-4 text-xs font-mono text-zinc-500 max-w-2xl mx-auto uppercase tracking-widest">
+          <p className="mt-4 text-[10px] md:text-xs font-mono text-zinc-500 max-w-2xl mx-auto uppercase tracking-[0.2em] md:tracking-widest">
             Encryption at rest. Isolation in execution. No telemetry.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-px bg-zinc-700">
-          <div className="relative bg-zinc-950 p-6 border-l-2 border-l-blue-500">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-zinc-700">
+          <div className="relative bg-zinc-950 p-4 md:p-6 border-l-2 border-l-blue-500">
             <div className="absolute -top-px -right-px w-4 h-4 border-r border-t border-blue-500/50" />
 
             <div className="flex items-center gap-3 mb-6">
@@ -37,7 +37,7 @@ export function Security() {
                 "Total control over campaign boundaries",
                 "Secure SMTP server connectivity",
               ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-zinc-300">
+                <li key={item} className="flex items-start gap-3 text-zinc-300 text-sm md:text-base">
                   <Check className="w-4 h-4 text-blue-400 mt-1 flex-shrink-0" />
                   <span>{item}</span>
                 </li>
@@ -45,7 +45,7 @@ export function Security() {
             </ul>
           </div>
 
-          <div className="relative bg-zinc-950 p-6 border-l-2 border-l-zinc-600">
+          <div className="relative bg-zinc-950 p-4 md:p-6 border-l-2 border-l-zinc-600">
             <div className="absolute -top-px -right-px w-4 h-4 border-r border-t border-zinc-600/50" />
 
             <div className="flex items-center gap-3 mb-6">
@@ -63,7 +63,7 @@ export function Security() {
                 "Email-optimized personalization logic",
                 "Standard SMTP protocol encryption",
               ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-zinc-400">
+                <li key={item} className="flex items-start gap-3 text-zinc-400 text-sm md:text-base">
                   <X className="w-4 h-4 text-zinc-500 mt-1 flex-shrink-0" />
                   <span>{item}</span>
                 </li>
@@ -83,7 +83,7 @@ export function Security() {
               System Specs
             </h3>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-zinc-800">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-zinc-800">
             <div className="bg-zinc-950 p-4">
               <div className="text-[10px] text-zinc-600 mb-1 font-mono uppercase tracking-widest">
                 AI Engine
@@ -96,13 +96,13 @@ export function Security() {
               </div>
               <div className="text-zinc-200 font-mono text-sm">Contextual Logic</div>
             </div>
-            <div className="bg-zinc-950 p-4">
+            <div className="bg-zinc-950 p-4 border-t md:border-t-0 border-zinc-800/50">
               <div className="text-[10px] text-zinc-600 mb-1 font-mono uppercase tracking-widest">
                 Data Safety
               </div>
               <div className="text-zinc-200 font-mono text-sm">AES-256 Protected</div>
             </div>
-            <div className="bg-zinc-950 p-4">
+            <div className="bg-zinc-950 p-4 border-t md:border-t-0 border-zinc-800/50">
               <div className="text-[10px] text-zinc-600 mb-1 font-mono uppercase tracking-widest">
                 Processing
               </div>

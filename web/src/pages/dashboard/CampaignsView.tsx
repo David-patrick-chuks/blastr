@@ -93,11 +93,11 @@ export function CampaignsView() {
     return (
         <>
             <div className="space-y-6">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <h2 className="text-xl font-bold">Campaigns</h2>
                     <button
                         onClick={handleCreateClick}
-                        className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-400 text-zinc-900 font-bold text-sm transition-colors cursor-pointer shadow-lg shadow-blue-500/20"
+                        className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-400 text-zinc-900 font-bold text-sm transition-colors cursor-pointer shadow-lg shadow-blue-500/20 w-full sm:w-auto"
                     >
                         <Plus className="w-4 h-4" />
                         CREATE CAMPAIGN
@@ -105,8 +105,8 @@ export function CampaignsView() {
                 </div>
 
                 <div className="border border-zinc-800 bg-zinc-900/40 overflow-hidden">
-                    <div className="p-4 border-b border-zinc-800 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-zinc-900/60">
-                        <div className="relative w-full md:w-80">
+                    <div className="p-4 border-b border-zinc-800 flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-zinc-900/60">
+                        <div className="relative w-full lg:w-80">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 pointer-events-none" />
                             <input
                                 type="text"

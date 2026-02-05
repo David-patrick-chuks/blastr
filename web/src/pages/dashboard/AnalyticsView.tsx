@@ -26,25 +26,25 @@ export function AnalyticsView() {
         loadData();
     }, []);
 
-    if (loading) return <div className="p-8 font-mono text-zinc-500 uppercase tracking-widest">Syncing with GAIA Core...</div>;
+    if (loading) return <div className="p-8 font-mono text-zinc-500 uppercase tracking-widest">Syncing with BLASTR Core...</div>;
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-6 md:space-y-8">
             <div>
                 <h2 className="text-xl font-bold mb-2">System Analytics</h2>
                 <p className="text-zinc-500 text-sm">Deep insights into kernel performance and Gemini 2.0 Flash utilization.</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                 <SmallStat icon={Activity} label="THROUGHPUT" value={`${((overview?.totalRequests || 0) / 86400).toFixed(4)} req/s`} trend="LIVE" />
                 <SmallStat icon={Clock} label="LATENCY" value={overview?.apiLatency || "N/A"} trend="NOMINAL" />
-                <SmallStat icon={Zap} label="TOTAL BOTS" value={overview?.totalBots || "0"} trend="ACTIVE" />
+                <SmallStat icon={Zap} label="TOTAL AGENTS" value={overview?.totalBots || "0"} trend="ACTIVE" />
                 <SmallStat icon={BarChart3} label="HEALTH" value={overview?.systemHealth || "N/A"} trend="STABLE" />
             </div>
 
-            <div className="border border-zinc-800 bg-zinc-900/40 p-8 h-80 flex flex-col justify-end">
+            <div className="border border-zinc-800 bg-zinc-900/40 p-4 md:p-8 h-80 flex flex-col justify-end overflow-hidden">
                 <h3 className="text-[10px] font-mono text-zinc-500 mb-8 uppercase tracking-[0.3em]">RECIPIENT ACTIVITY (LAST 24H)</h3>
-                <div className="flex-1 flex items-end gap-2 pr-8">
+                <div className="flex-1 flex items-end gap-1 md:gap-2 pr-4 md:pr-8 overflow-x-auto pb-2 scrollbar-none">
                     {realtimeData.map((v, i) => {
                         const max = Math.max(...realtimeData, 1);
                         const height = (v / max) * 100;
@@ -63,13 +63,13 @@ export function AnalyticsView() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="border border-zinc-800 bg-zinc-900/40 p-6 font-mono">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+                <div className="border border-zinc-800 bg-zinc-900/40 p-4 md:p-6 font-mono">
                     <h3 className="text-[10px] text-zinc-500 mb-4 uppercase tracking-[0.3em]">SYSTEM OVERHEAD</h3>
                     <div className="space-y-4 text-xs">
                         <div className="flex justify-between border-b border-zinc-800/50 pb-2">
                             <span className="text-white">Active Transmitters</span>
-                            <span className="text-blue-500">{overview?.totalBots} BOTS</span>
+                            <span className="text-blue-500">{overview?.totalBots} AGENTS</span>
                         </div>
                         <div className="flex justify-between border-b border-zinc-800/50 pb-2">
                             <span className="text-white">Recipients Synced</span>
@@ -81,7 +81,7 @@ export function AnalyticsView() {
                         </div>
                     </div>
                 </div>
-                <div className="border border-zinc-800 bg-zinc-900/40 p-6 font-mono">
+                <div className="border border-zinc-800 bg-zinc-900/40 p-4 md:p-6 font-mono">
                     <h3 className="text-[10px] text-zinc-500 mb-4 uppercase tracking-[0.3em]">MODEL CONFIGURATION</h3>
                     <div className="space-y-4 text-xs">
                         <div className="flex justify-between border-b border-zinc-800/50 pb-2">
