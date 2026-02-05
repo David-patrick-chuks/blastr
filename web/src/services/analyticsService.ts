@@ -1,15 +1,17 @@
 import apiClient from './apiClient';
 
 export interface SystemOverview {
-    totalAgents: number;
-    totalDocuments: number;
+    totalCampaigns: number;
+    totalRecipients: number;
     totalRequests: number;
+    totalBots: number;
     systemHealth: string;
     apiLatency: string;
 }
 
 export interface AgentAnalyticsStats {
-    documentCount: number;
+    recipientCount: number;
+    sentCount: number;
     messageCount: number;
     tokensUsed: number;
     status: string;

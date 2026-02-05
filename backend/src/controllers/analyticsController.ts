@@ -6,10 +6,10 @@ export const getCampaignStats = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.id;
     const { id } = req.params;
     try {
-        const docCountRes = await pool.query('SELECT COUNT(*) FROM documents WHERE agent_id = $1 AND user_id = $2', [id, userId]);
-        const msgCountRes = await pool.query('SELECT COUNT(*) FROM messages WHERE agent_id = $1 AND user_id = $2', [id, userId]);
-        const tokenRes = await pool.query('SELECT SUM(tokens_used) as total FROM messages WHERE agent_id = $1 AND user_id = $2', [id, userId]);
-        const agentRes = await pool.query('SELECT status, created_at, uptime FROM campaigns WHERE id = $1 AND user_id = $2', [id, userId]);
+        const recipientCountRes = await pool.query('SELECT total_recipients, sent_count FROM campaigns WHERE id = $1 AND user_id = $2', [id, userId]);
+        const msgCountRes = await pool.query('SELECT COUNT(*) FROM messages WHERE campaign_id = $1 AND user_id = $2', [id, userId]);
+        const tokenRes = await pool.query('SELECT SUM(tokens_used) as total FROM messages WHERE campaign_id = $1 AND user_id = $2', [id, userId]);
+        const agentRes = await pool.query('SELECT status, created_at FROM campaigns WHERE id = $1 AND user_id = $2', [id, userId]);
 
         if (agentRes.rows.length === 0) {
             res.status(404).json({ error: 'Campaign not found' });
@@ -17,13 +17,15 @@ export const getCampaignStats = async (req: AuthRequest, res: Response) => {
         }
 
         const agent = agentRes.rows[0];
+        const campaign = recipientCountRes.rows[0];
         res.json({
-            documentCount: parseInt(docCountRes.rows[0].count),
+            recipientCount: parseInt(campaign.total_recipients || 0),
+            sentCount: parseInt(campaign.sent_count || 0),
             messageCount: parseInt(msgCountRes.rows[0].count),
             tokensUsed: parseInt(tokenRes.rows[0].total || 0),
             status: agent.status,
             activeSince: agent.created_at,
-            uptime: agent.uptime || '99.9%'
+            uptime: '99.9%'
         });
     } catch (error) {
         console.error('Error fetching campaign stats:', error);
@@ -34,14 +36,16 @@ export const getCampaignStats = async (req: AuthRequest, res: Response) => {
 export const getSystemOverview = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.id;
     try {
-        const agentCountRes = await pool.query('SELECT COUNT(*) FROM campaigns WHERE user_id = $1', [userId]);
-        const docCountRes = await pool.query('SELECT COUNT(*) FROM documents WHERE user_id = $1', [userId]);
+        const campaignCountRes = await pool.query('SELECT COUNT(*) FROM campaigns WHERE user_id = $1', [userId]);
+        const recipientCountRes = await pool.query('SELECT SUM(total_recipients) as total FROM campaigns WHERE user_id = $1', [userId]);
         const msgCountRes = await pool.query('SELECT COUNT(*) FROM messages WHERE user_id = $1', [userId]);
+        const agentCountRes = await pool.query('SELECT COUNT(*) FROM agents WHERE user_id = $1', [userId]);
 
         res.json({
-            totalCampaigns: parseInt(agentCountRes.rows[0].count),
-            totalDocuments: parseInt(docCountRes.rows[0].count),
+            totalCampaigns: parseInt(campaignCountRes.rows[0].count),
+            totalRecipients: parseInt(recipientCountRes.rows[0].total || 0),
             totalRequests: parseInt(msgCountRes.rows[0].count),
+            totalBots: parseInt(agentCountRes.rows[0].count),
             systemHealth: 'Optimal',
             apiLatency: '< 450ms'
         });
@@ -88,7 +92,7 @@ export const getActivityLogs = async (req: AuthRequest, res: Response) => {
         const result = await pool.query(`
             SELECT a.name as campaign_name, l.action, l.details, l.created_at 
             FROM activity_logs l 
-            LEFT JOIN campaigns a ON l.agent_id = a.id 
+            LEFT JOIN campaigns a ON l.campaign_id = a.id 
             WHERE l.user_id = $1
             ORDER BY l.created_at DESC LIMIT 20
         `, [userId]);

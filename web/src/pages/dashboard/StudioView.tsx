@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Send, Bot, User, Sparkles, Loader2, Info, LayoutDashboard, ChevronRight, ChevronDown } from "lucide-react";
+import { Send, User, Sparkles, ChevronDown } from "lucide-react";
 import { campaignService, authService } from "../../services/index";
 import { useSocket } from "../../hooks/useSocket";
 import type { Campaign, ChatMessage } from "../../types/index";
@@ -158,8 +158,8 @@ export function StudioView() {
                     )}
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono text-zinc-600">ENGINE: GEMINI 2.0 FLASH</span>
-                    <div className={`w-2 h-2 rounded-full ${loading ? 'bg-amber-500 animate-ping' : 'bg-blue-500'}`} />
+                    <span className="text-[10px] font-mono text-zinc-600 uppercase">Engine: Gemini 2.0 Flash</span>
+                    <div className={`w-1.5 h-1.5 rounded-full ${loading ? 'bg-amber-500 animate-ping' : 'bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]'}`} />
                 </div>
             </div>
 
@@ -241,11 +241,20 @@ export function StudioView() {
                     </div>
 
                     <div className="p-4 border border-zinc-800 bg-zinc-900/40">
-                        <h3 className="text-xs font-mono text-zinc-500 mb-4 uppercase tracking-wider">Parameters</h3>
-                        <div className="space-y-4 text-zinc-500">
-                            <ParameterSlider label="Temperature" value="0.7" />
-                            <ParameterSlider label="Max Output Tokens" value="2048" />
-                            <ParameterSlider label="Top P" value="0.95" />
+                        <h3 className="text-xs font-mono text-zinc-500 mb-4 uppercase tracking-wider">System Parameters</h3>
+                        <div className="space-y-4 text-[10px] font-mono text-zinc-600 uppercase tracking-widest">
+                            <div className="flex justify-between">
+                                <span>Temperature</span>
+                                <span className="text-blue-500">0.7 (AUTO)</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span>Context</span>
+                                <span className="text-blue-500">DYNAMIC</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span>Optimization</span>
+                                <span className="text-blue-500">BALANCED</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -254,16 +263,3 @@ export function StudioView() {
     );
 }
 
-function ParameterSlider({ label, value }: { label: string, value: string }) {
-    return (
-        <div className="space-y-2">
-            <div className="flex justify-between items-center text-[10px] font-mono">
-                <span className="text-zinc-500 uppercase">{label}</span>
-                <span className="text-blue-500">{value}</span>
-            </div>
-            <div className="h-1 bg-zinc-800 relative">
-                <div className="absolute top-0 left-0 h-full bg-blue-500/40 w-[70%]" />
-            </div>
-        </div>
-    );
-}

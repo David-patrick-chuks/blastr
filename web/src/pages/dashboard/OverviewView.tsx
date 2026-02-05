@@ -35,20 +35,20 @@ export function OverviewView() {
                     icon={Activity}
                     label="TOTAL TRANSMISSIONS"
                     value={overview?.totalRequests.toLocaleString() || "0"}
-                    change="+12% DELIVERABILITY"
+                    change="AI GENERATED"
                 />
                 <StatCard
                     icon={Activity}
-                    label="ENGINE STATUS"
-                    value={overview?.systemHealth || "N/A"}
-                    change={`${overview?.totalAgents} ACTIVE CAMPAIGNS`}
+                    label="ACTIVE CAMPAIGNS"
+                    value={overview?.totalCampaigns.toLocaleString() || "0"}
+                    change={`${overview?.totalBots} LIVE BOTS`}
                     changeColor="text-blue-400"
                 />
                 <StatCard
                     icon={Users}
-                    label="RECIPIENTS INDEXED"
-                    value={overview?.totalDocuments || "0"}
-                    change="VERIFIED ENTRIES"
+                    label="TOTAL RECIPIENTS"
+                    value={overview?.totalRecipients.toLocaleString() || "0"}
+                    change="SYNCED ENTRIES"
                     changeColor="text-zinc-500"
                 />
             </div>
@@ -76,11 +76,20 @@ export function OverviewView() {
                     </div>
                 </div>
                 <div className="border border-zinc-800 bg-zinc-900/40 p-6">
-                    <h3 className="text-sm font-mono text-zinc-500 mb-8 uppercase tracking-widest">Gemini 2.0 Flash Utilization</h3>
-                    <div className="space-y-10 py-4">
-                        <UsageBar label="Personalization Engine" value={75} />
-                        <UsageBar label="Multimodal Extraction" value={45} />
-                        <UsageBar label="Deliverability Analysis" value={90} />
+                    <h3 className="text-sm font-mono text-zinc-500 mb-8 uppercase tracking-widest">Platform Status</h3>
+                    <div className="space-y-10 py-4 font-mono">
+                        <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
+                            <span className="text-[10px] text-zinc-500 uppercase">Core Latency</span>
+                            <span className="text-sm text-blue-500">{overview?.apiLatency}</span>
+                        </div>
+                        <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
+                            <span className="text-[10px] text-zinc-500 uppercase">Model Version</span>
+                            <span className="text-sm text-zinc-300">Gemini 2.0 Flash</span>
+                        </div>
+                        <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
+                            <span className="text-[10px] text-zinc-500 uppercase">Engine Health</span>
+                            <span className="text-sm text-blue-500">{overview?.systemHealth}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -118,19 +127,3 @@ function ActivityItem({ title, action, time, details }: any) {
     );
 }
 
-function UsageBar({ label, value }: { label: string, value: number }) {
-    return (
-        <div className="space-y-2">
-            <div className="flex justify-between text-[10px] font-mono uppercase tracking-widest">
-                <span className="text-zinc-400">{label}</span>
-                <span className="text-blue-400">{value}%</span>
-            </div>
-            <div className="h-1 text-zinc-800 bg-zinc-800 relative">
-                <div
-                    className="absolute top-0 left-0 h-full bg-blue-500"
-                    style={{ width: `${value}%` }}
-                />
-            </div>
-        </div>
-    );
-}

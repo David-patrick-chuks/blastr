@@ -32,30 +32,34 @@ export function AnalyticsView() {
         <div className="space-y-8">
             <div>
                 <h2 className="text-xl font-bold mb-2">System Analytics</h2>
-                <p className="text-zinc-500 text-sm">Deep insights into kernel performance and Gemini 3 utilization.</p>
+                <p className="text-zinc-500 text-sm">Deep insights into kernel performance and Gemini 2.0 Flash utilization.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <SmallStat icon={Activity} label="THROUGHPUT" value={`${((overview?.totalRequests || 0) / 86400).toFixed(4)} req/s`} trend="+0.5" />
-                <SmallStat icon={Clock} label="LATENCY" value={overview?.apiLatency || "N/A"} trend="-20ms" />
-                <SmallStat icon={Zap} label="TOKEN UTIL" value={((overview?.totalRequests || 0) * 1240).toLocaleString()} trend="+$1.2" />
-                <SmallStat icon={BarChart3} label="ACCURACY" value="99.2%" trend="+0.1%" />
+                <SmallStat icon={Activity} label="THROUGHPUT" value={`${((overview?.totalRequests || 0) / 86400).toFixed(4)} req/s`} trend="LIVE" />
+                <SmallStat icon={Clock} label="LATENCY" value={overview?.apiLatency || "N/A"} trend="NOMINAL" />
+                <SmallStat icon={Zap} label="TOTAL BOTS" value={overview?.totalBots || "0"} trend="ACTIVE" />
+                <SmallStat icon={BarChart3} label="HEALTH" value={overview?.systemHealth || "N/A"} trend="STABLE" />
             </div>
 
             <div className="border border-zinc-800 bg-zinc-900/40 p-8 h-80 flex flex-col justify-end">
-                <h3 className="text-[10px] font-mono text-zinc-500 mb-8 uppercase tracking-[0.3em]">REQUEST VOLUME (LAST 24H)</h3>
+                <h3 className="text-[10px] font-mono text-zinc-500 mb-8 uppercase tracking-[0.3em]">RECIPIENT ACTIVITY (LAST 24H)</h3>
                 <div className="flex-1 flex items-end gap-2 pr-8">
-                    {realtimeData.map((v, i) => (
-                        <div
-                            key={i}
-                            className="flex-1 bg-blue-500/20 hover:bg-blue-500/50 transition-all relative group"
-                            style={{ height: `${v}%` }}
-                        >
-                            <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-zinc-900 border border-zinc-700 px-2 py-1 text-[10px] font-mono text-white opacity-0 group-hover:opacity-100 whitespace-nowrap z-10">
-                                {v} REQS
+                    {realtimeData.map((v, i) => {
+                        const max = Math.max(...realtimeData, 1);
+                        const height = (v / max) * 100;
+                        return (
+                            <div
+                                key={i}
+                                className="flex-1 bg-blue-500/20 hover:bg-blue-500/50 transition-all relative group"
+                                style={{ height: `${height}%` }}
+                            >
+                                <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-zinc-900 border border-zinc-700 px-2 py-1 text-[10px] font-mono text-white opacity-0 group-hover:opacity-100 whitespace-nowrap z-10">
+                                    {v} REQS
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
 
@@ -64,36 +68,33 @@ export function AnalyticsView() {
                     <h3 className="text-[10px] text-zinc-500 mb-4 uppercase tracking-[0.3em]">SYSTEM OVERHEAD</h3>
                     <div className="space-y-4 text-xs">
                         <div className="flex justify-between border-b border-zinc-800/50 pb-2">
-                            <span className="text-white">Active Kernels</span>
-                            <span className="text-blue-500">{overview?.totalAgents} NODES</span>
+                            <span className="text-white">Active Transmitters</span>
+                            <span className="text-blue-500">{overview?.totalBots} BOTS</span>
                         </div>
                         <div className="flex justify-between border-b border-zinc-800/50 pb-2">
-                            <span className="text-white">Knowledge Vectors</span>
-                            <span className="text-blue-500">{overview?.totalDocuments.toLocaleString()} CHUNKS</span>
+                            <span className="text-white">Recipients Synced</span>
+                            <span className="text-blue-500">{(overview?.totalRecipients || 0).toLocaleString()} ENTRIES</span>
                         </div>
                         <div className="flex justify-between border-b border-zinc-800/50 pb-2">
-                            <span className="text-white">Total Processed</span>
-                            <span className="text-blue-500">{overview?.totalRequests.toLocaleString()} TX</span>
+                            <span className="text-white">Total Transmissions</span>
+                            <span className="text-blue-500">{(overview?.totalRequests || 0).toLocaleString()} TX</span>
                         </div>
                     </div>
                 </div>
                 <div className="border border-zinc-800 bg-zinc-900/40 p-6 font-mono">
-                    <h3 className="text-[10px] text-zinc-500 mb-4 uppercase tracking-[0.3em]">RESOURCE DISTRIBUTION</h3>
+                    <h3 className="text-[10px] text-zinc-500 mb-4 uppercase tracking-[0.3em]">MODEL CONFIGURATION</h3>
                     <div className="space-y-4 text-xs">
-                        <div className="flex items-center gap-4">
-                            <div className="w-24 text-zinc-500">Multimodal</div>
-                            <div className="flex-1 h-1 bg-zinc-800"><div className="w-[65%] h-full bg-blue-400" /></div>
-                            <span className="w-10 text-right">65%</span>
+                        <div className="flex justify-between border-b border-zinc-800/50 pb-2">
+                            <span className="text-white">Model Tier</span>
+                            <span className="text-blue-500">GEMINI 2.0 FLASH</span>
                         </div>
-                        <div className="flex items-center gap-4">
-                            <div className="w-24 text-zinc-500">Reasoning</div>
-                            <div className="flex-1 h-1 bg-zinc-800"><div className="w-[28%] h-full bg-blue-400" /></div>
-                            <span className="w-10 text-right">28%</span>
+                        <div className="flex justify-between border-b border-zinc-800/50 pb-2">
+                            <span className="text-white">Context Window</span>
+                            <span className="text-blue-500">1M TOKENS</span>
                         </div>
-                        <div className="flex items-center gap-4">
-                            <div className="w-24 text-zinc-500">Security Layers</div>
-                            <div className="flex-1 h-1 bg-zinc-800"><div className="w-[7%] h-full bg-blue-400" /></div>
-                            <span className="w-10 text-right">7%</span>
+                        <div className="flex justify-between border-b border-zinc-800/50 pb-2">
+                            <span className="text-white">Reasoning Level</span>
+                            <span className="text-blue-500">ADVANCED</span>
                         </div>
                     </div>
                 </div>
