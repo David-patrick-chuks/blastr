@@ -49,7 +49,8 @@ export const authService = {
     },
 
     async signInWithOAuth(provider: 'google') {
-        const data = await apiClient.get<any>(`/auth/oauth/${provider}`);
+        const redirectTo = encodeURIComponent(`${window.location.origin}/auth/callback`);
+        const data = await apiClient.get<any>(`/auth/oauth/${provider}?redirectTo=${redirectTo}`);
         if (data.url) {
             window.location.href = data.url;
         }
