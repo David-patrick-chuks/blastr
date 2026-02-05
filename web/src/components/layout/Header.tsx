@@ -20,14 +20,14 @@ export function Header() {
     const getActiveTab = () => {
         const path = location.pathname.split('/')[2] || 'overview';
         const nameMap: Record<string, string> = {
-            'overview': 'COMMAND CENTER',
-            'campaigns': 'OPERATIONS',
-            'studio': 'AI STUDIO',
-            'deploy': 'RECIPIENT INTEL',
-            'bots': 'TRANSMISSION BOTS',
-            'analytics': 'PERFORMANCE METRICS',
-            'profile': 'MY IDENTITY',
-            'settings': 'SYSTEM CONFIG'
+            'overview': 'OVERVIEW',
+            'campaigns': 'CAMPAIGNS',
+            'studio': 'COMPOSER',
+            'deploy': 'EXTRACTOR',
+            'bots': 'AGENT',
+            'analytics': 'ANALYTICS',
+            'profile': 'PROFILE',
+            'settings': 'SETTINGS'
         };
         return nameMap[path] || path.toUpperCase();
     };
