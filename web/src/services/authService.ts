@@ -46,6 +46,7 @@ export const authService = {
         localStorage.removeItem('gaia_session');
         localStorage.removeItem('gaia_user');
         notifyListeners(null);
+        window.location.href = '/';
     },
 
     async signInWithOAuth(provider: 'google') {
