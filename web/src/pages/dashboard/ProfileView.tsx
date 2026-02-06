@@ -52,7 +52,6 @@ export function ProfileView() {
     const handleLogout = async () => {
         try {
             await authService.logout();
-            window.location.href = '/';
         } catch (error) {
             console.error('Logout failed:', error);
         }
