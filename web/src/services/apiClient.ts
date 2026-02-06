@@ -13,7 +13,7 @@ class ApiClient {
         const url = `${this.baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
 
         // Get active session for auth header
-        const sessionRaw = localStorage.getItem('gaia_session');
+        const sessionRaw = localStorage.getItem('blastr_session');
         const session = sessionRaw ? JSON.parse(sessionRaw) : null;
 
         const headers: Record<string, string> = {
