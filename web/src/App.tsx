@@ -22,7 +22,7 @@ function App() {
 
   useEffect(() => {
     // Check initial session
-    authService.getSession().then(s => {
+    authService.getSession().then((s: any) => {
       setSession(s);
       setLoading(false);
     });

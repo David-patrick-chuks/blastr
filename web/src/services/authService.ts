@@ -82,7 +82,7 @@ export const authService = {
         return JSON.parse(user);
     },
 
-    getSession(): any {
+    async getSession(): Promise<any> {
         const session = localStorage.getItem('blastr_session');
         return session ? JSON.parse(session) : null;
     },
