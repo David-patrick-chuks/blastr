@@ -20,8 +20,8 @@ export const authService = {
     async signup(email: string, password: string, fullName: string) {
         const data = await apiClient.post<any>('/auth/signup', { email, password, full_name: fullName });
         if (data.session) {
-            localStorage.setItem('gaia_session', JSON.stringify(data.session));
-            localStorage.setItem('gaia_user', JSON.stringify(data.session.user));
+            localStorage.setItem('blastr_session', JSON.stringify(data.session));
+            localStorage.setItem('blastr_user', JSON.stringify(data.session.user));
             notifyListeners(data.session);
         }
         return data;
@@ -30,8 +30,8 @@ export const authService = {
     async login(email: string, password: string) {
         const data = await apiClient.post<any>('/auth/login', { email, password });
         if (data.session) {
-            localStorage.setItem('gaia_session', JSON.stringify(data.session));
-            localStorage.setItem('gaia_user', JSON.stringify(data.session.user));
+            localStorage.setItem('blastr_session', JSON.stringify(data.session));
+            localStorage.setItem('blastr_user', JSON.stringify(data.session.user));
             notifyListeners(data.session);
         }
         return data;
@@ -43,8 +43,8 @@ export const authService = {
         } catch (e) {
             console.error('Logout request failed:', e);
         }
-        localStorage.removeItem('gaia_session');
-        localStorage.removeItem('gaia_user');
+        localStorage.removeItem('blastr_session');
+        localStorage.removeItem('blastr_user');
         notifyListeners(null);
         window.location.href = '/';
     },
@@ -77,12 +77,13 @@ export const authService = {
     },
 
     async getCurrentUser() {
-        const user = localStorage.getItem('gaia_user');
-        return user ? JSON.parse(user) : null;
+        const user = localStorage.getItem('blastr_user');
+        if (!user) return null;
+        return JSON.parse(user);
     },
 
-    async getSession() {
-        const session = localStorage.getItem('gaia_session');
+    getSession(): any {
+        const session = localStorage.getItem('blastr_session');
         return session ? JSON.parse(session) : null;
     },
 

@@ -15,7 +15,7 @@ export function TechManifesto() {
                         </h2>
                         <div className="space-y-6 text-zinc-400 font-mono text-sm leading-relaxed">
                             <p>
-                                Most AI platforms build "wrappers". GAIA builds <span className="text-zinc-200">autonomous reasoning nodes</span>.
+                                Most AI platforms build "wrappers". Blastr builds <span className="text-zinc-200">autonomous reasoning nodes</span>.
                                 We prioritize low-latency execution and high-fidelity state management over generic chat interfaces.
                             </p>
                             <p>

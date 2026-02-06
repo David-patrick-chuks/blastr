@@ -4,7 +4,7 @@
 
 > **Submission for the Google Gemini API Hackathon**
 
-BLASTR (formerly GAIA) is a high-performance, agentic email marketing engine built to revolutionize outreach. By leveraging **Gemini 3.0 Flash**, BLASTR transforms static email lists into dynamic, hyper-personalized conversations at scale.
+BLASTR  is a high-performance, agentic email marketing engine built to revolutionize outreach. By leveraging **Gemini 3.0 Flash**, BLASTR transforms static email lists into dynamic, hyper-personalized conversations at scale.
 
 ## 🧠 Powered by Gemini 3.0 Flash
 

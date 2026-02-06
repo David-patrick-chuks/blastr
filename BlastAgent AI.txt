@@ -1,7 +1,7 @@
 # BLASTAGENT AI: COMPREHENSIVE PROJECT REPORT
 
 ## 1. PROJECT OVERVIEW
-BlastAgent AI is a high-volume, AI-driven email orchestration platform built for personalized outreach. Originally developed on the GAIA legacy framework, the platform has been fully overhauled to serve as a specialized tool for email marketers, sales teams, and developers who require Gemini-powered intelligence with reliable SMTP delivery.
+BlastAgent AI is a high-volume, AI-driven email orchestration platform built for personalized outreach. Originally developed on the Blastr legacy framework, the platform has been fully overhauled to serve as a specialized tool for email marketers, sales teams, and developers who require Gemini-powered intelligence with reliable SMTP delivery.
 
 **Core Objective:** To transform complex lead data into high-conversion email campaigns via zero-shot personalization and neural context retrieval.
 
@@ -27,10 +27,10 @@ BlastAgent AI is a high-volume, AI-driven email orchestration platform built for
 
 ---
 
-## 3. THE TRANSFORMATION JOURNEY (GAIA -> BLASTAGENT)
+## 3. THE TRANSFORMATION JOURNEY (BLASTR)
 
 ### PHASE 1: BRANDING & IDENTITY PURGE
-- **Global Purge:** Removed all instances of "GAIA", "Kernel", and "CLI" from the codebase.
+- **Global Purge:** Removed all instances of "GAIA", "Kernel", and "CLI" from the codebase, transitioning to Blastr.
 - **Landing Page Redesign:** Developed a premium dark-mode landing page featuring "The Ultimate Email Pipeline" visualization.
 - **Public Guides:** Created a user-facing **SMTP App Password Guide** (`/guide/smtp`) to solve common onboarding friction points with Google Workspace and Outlook.
 

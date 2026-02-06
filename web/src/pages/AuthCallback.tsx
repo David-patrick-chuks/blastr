@@ -51,8 +51,8 @@ export function AuthCallback() {
                 console.log('[AUTH_CALLBACK] Session validated, user:', data.user.id);
 
                 // Store session
-                localStorage.setItem('gaia_session', JSON.stringify(data.session));
-                localStorage.setItem('gaia_user', JSON.stringify(data.user));
+                localStorage.setItem('blastr_session', JSON.stringify(data.session));
+                localStorage.setItem('blastr_user', JSON.stringify(data.user));
 
                 // Notify auth listeners
                 authService.notifyAuthListeners(data.session);

@@ -38,8 +38,8 @@ class ApiClient {
                 (errorData.error.includes('Invalid or expired token') ||
                     errorData.error.includes('Unauthorized'))) {
                 // Clear session
-                localStorage.removeItem('gaia_session');
-                localStorage.removeItem('gaia_user');
+                localStorage.removeItem('blastr_session');
+                localStorage.removeItem('blastr_user');
 
                 // Redirect to landing page
                 window.location.href = '/';
