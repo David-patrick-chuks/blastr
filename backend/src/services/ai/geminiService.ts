@@ -108,6 +108,7 @@ class GeminiServiceClass {
     async extractEmailsFromImage(base64Image: string): Promise<string[]> {
         const prompt = `Extract all email addresses from this image. Return them as a comma-separated list of ONLY the email addresses. If no emails are found, return an empty string.`;
         try {
+            console.log(`[AI] Calling Gemini Vision model for extraction...`);
             const ai = this.getCurrentClient();
             const res = await ai.models.generateContent({
                 model: GEMINI_MODELS.FLASH_1_5,
@@ -121,6 +122,7 @@ class GeminiServiceClass {
             });
 
             const text = res.text || '';
+            console.log(`[AI] Raw vision response: "${text}"`);
             return text.split(',').map(e => e.trim()).filter(e => e.includes('@'));
         } catch (error) {
             logger.error(`Email extraction from image failed: ${error instanceof Error ? error.message : String(error)}`);

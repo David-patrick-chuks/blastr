@@ -20,12 +20,14 @@ export const generate = async (req: Request, res: Response) => {
 export const extractEmails = async (req: Request, res: Response) => {
     try {
         const { image } = req.body; // base64 image
+        console.log(`[AI] Received email extraction request. Image size: ${image?.length || 0} chars`);
         if (!image) {
             res.status(400).json({ error: 'Image is required' });
             return;
         }
 
         const emails = await geminiService.extractEmailsFromImage(image);
+        console.log(`[AI] Extraction complete. Found ${emails.length} emails:`, emails);
         res.json({ emails });
     } catch (error) {
         console.error(error);
