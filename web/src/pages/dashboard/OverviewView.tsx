@@ -2,6 +2,7 @@ import { Activity, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { analyticsService } from "../../services/index";
 import type { SystemOverview, ActivityLog } from "../../services/index";
+import { SkeletonCard, SkeletonActivity } from "../../components/shared/index";
 
 export function OverviewView() {
     const [overview, setOverview] = useState<SystemOverview | null>(null);
@@ -26,7 +27,41 @@ export function OverviewView() {
         loadData();
     }, []);
 
-    if (loading) return <div className="p-8 font-mono text-zinc-500">Loading system metrics...</div>;
+    if (loading) {
+        return (
+            <div className="space-y-6 md:space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                    <SkeletonCard />
+                    <SkeletonCard />
+                    <SkeletonCard />
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+                    <div className="border border-zinc-800 bg-zinc-900/40 p-4 md:p-6 min-h-[400px]">
+                        <div className="flex items-center justify-between mb-6">
+                            <div className="w-24 h-3 bg-zinc-800 animate-pulse rounded" />
+                            <div className="w-12 h-3 bg-zinc-800 animate-pulse rounded" />
+                        </div>
+                        <div className="space-y-4">
+                            <SkeletonActivity />
+                            <SkeletonActivity />
+                            <SkeletonActivity />
+                        </div>
+                    </div>
+                    <div className="border border-zinc-800 bg-zinc-900/40 p-4 md:p-6">
+                        <div className="w-32 h-3 bg-zinc-800 animate-pulse rounded mb-8" />
+                        <div className="space-y-10 py-4">
+                            {[1, 2, 3].map(i => (
+                                <div key={i} className="flex justify-between items-center border-b border-zinc-800 pb-4">
+                                    <div className="w-20 h-2 bg-zinc-800 animate-pulse rounded" />
+                                    <div className="w-24 h-3 bg-zinc-800 animate-pulse rounded" />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6 md:space-y-8">

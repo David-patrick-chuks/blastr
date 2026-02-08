@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { User, Shield, Save, LogOut, Terminal, CheckCircle2 } from 'lucide-react';
 import { authService } from '../../services/index';
 import type { UserProfile } from '../../services/index';
+import { Skeleton } from '../../components/shared/index';
 
 export function ProfileView() {
     const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -57,7 +58,28 @@ export function ProfileView() {
         }
     };
 
-    if (loading) return <div className="p-8 font-mono text-zinc-500 uppercase tracking-widest">Accessing core identity services...</div>;
+    if (loading) {
+        return (
+            <div className="max-w-2xl space-y-8">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <Skeleton width={180} height={24} className="mb-2" />
+                        <Skeleton width={300} height={14} />
+                    </div>
+                </div>
+                <div className="border border-zinc-800 bg-zinc-900/40 p-8 space-y-8">
+                    <div className="flex items-center gap-6">
+                        <Skeleton width={80} height={80} />
+                        <div className="space-y-2">
+                            <Skeleton width={120} height={10} />
+                            <Skeleton width={200} height={24} />
+                            <Skeleton width={150} height={12} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="max-w-2xl space-y-8">

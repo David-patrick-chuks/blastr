@@ -4,6 +4,7 @@ import { InfoModal, ConfirmModal } from "../../components/Modal";
 import { BotModal } from "../../components/agents/BotModal";
 import { apiClient } from "../../services/index";
 import type { Agent } from "../../types/index";
+import { Skeleton } from "../../components/shared/index";
 
 export function BotsView() {
     const [bots, setBots] = useState<Agent[]>([]);
@@ -145,7 +146,23 @@ export function BotsView() {
                         </thead>
                         <tbody className="divide-y divide-zinc-800/50">
                             {loading ? (
-                                <tr><td colSpan={5} className="px-6 py-12 text-center text-zinc-500 font-mono">Loading data engines...</td></tr>
+                                [1, 2, 3, 4, 5].map(i => (
+                                    <tr key={i} className="border-b border-zinc-800/50">
+                                        <td className="px-6 py-4">
+                                            <div className="flex items-center gap-3">
+                                                <Skeleton width={32} height={32} />
+                                                <div className="space-y-2 flex-1">
+                                                    <Skeleton width="60%" height={12} />
+                                                    <Skeleton width="80%" height={8} />
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4"><Skeleton width={120} height={10} /></td>
+                                        <td className="px-6 py-4"><Skeleton width={60} height={12} /></td>
+                                        <td className="px-6 py-4"><Skeleton width={80} height={16} /></td>
+                                        <td className="px-6 py-4"><div className="flex justify-end gap-3"><Skeleton width={20} height={20} /><Skeleton width={20} height={20} /></div></td>
+                                    </tr>
+                                ))
                             ) : filteredBots.length === 0 ? (
                                 <tr><td colSpan={5} className="px-6 py-12 text-center text-zinc-500 font-mono">No active bots found.</td></tr>
                             ) : (

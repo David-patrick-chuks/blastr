@@ -4,6 +4,7 @@ import { InfoModal, ConfirmModal } from "../../components/Modal";
 import { CampaignModal } from "../../components/agents/CampaignModal";
 import { campaignService } from "../../services/index";
 import type { Campaign } from "../../types/index";
+import { Skeleton } from "../../components/shared/index";
 
 export function CampaignsView() {
     const [infoModalOpen, setInfoModalOpen] = useState(false);
@@ -142,11 +143,23 @@ export function CampaignsView() {
                             </thead>
                             <tbody className="divide-y divide-zinc-800/50 text-sm">
                                 {loading ? (
-                                    <tr>
-                                        <td colSpan={5} className="px-6 py-8 text-center text-zinc-500 font-mono">
-                                            Loading campaigns...
-                                        </td>
-                                    </tr>
+                                    [1, 2, 3, 4, 5].map(i => (
+                                        <tr key={i} className="border-b border-zinc-800/50">
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-3">
+                                                    <Skeleton width={32} height={32} />
+                                                    <div className="space-y-2 flex-1">
+                                                        <Skeleton width="50%" height={14} />
+                                                        <Skeleton width="30%" height={8} />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4"><Skeleton width="100%" height={10} /></td>
+                                            <td className="px-6 py-4"><Skeleton width={80} height={12} /></td>
+                                            <td className="px-6 py-4"><Skeleton width={60} height={12} /></td>
+                                            <td className="px-6 py-4"><div className="flex justify-end gap-3"><Skeleton width={20} height={20} /><Skeleton width={20} height={20} /></div></td>
+                                        </tr>
+                                    ))
                                 ) : filteredCampaigns.length === 0 ? (
                                     <tr>
                                         <td colSpan={5} className="px-6 py-8 text-center text-zinc-500 font-mono">

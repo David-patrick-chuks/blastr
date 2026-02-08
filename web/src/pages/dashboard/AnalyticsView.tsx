@@ -2,6 +2,7 @@ import { Activity, BarChart3, Clock, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { analyticsService } from "../../services/index";
 import type { SystemOverview } from "../../services/index";
+import { Skeleton } from "../../components/shared/index";
 
 export function AnalyticsView() {
     const [overview, setOverview] = useState<SystemOverview | null>(null);
@@ -26,7 +27,38 @@ export function AnalyticsView() {
         loadData();
     }, []);
 
-    if (loading) return <div className="p-8 font-mono text-zinc-500 uppercase tracking-widest">Syncing with BLASTR Core...</div>;
+    if (loading) {
+        return (
+            <div className="space-y-6 md:space-y-8">
+                <div>
+                    <Skeleton width={200} height={24} className="mb-2" />
+                    <Skeleton width={400} height={14} />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                    {[1, 2, 3, 4].map(i => (
+                        <div key={i} className="p-4 border border-zinc-800 bg-zinc-900/40">
+                            <div className="flex items-center gap-2 mb-2">
+                                <Skeleton width={14} height={14} circle />
+                                <Skeleton width={80} height={10} />
+                            </div>
+                            <div className="flex items-baseline justify-between mt-4">
+                                <Skeleton width={100} height={24} />
+                                <Skeleton width={40} height={10} />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className="border border-zinc-800 bg-zinc-900/40 p-4 md:p-8 h-80 flex flex-col justify-end">
+                    <Skeleton width={150} height={10} className="mb-8" />
+                    <div className="flex-1 flex items-end gap-2 pr-8">
+                        {[...Array(24)].map((_, i) => (
+                            <Skeleton key={i} width="100%" height={`${Math.random() * 60 + 20}%`} className="flex-1 opacity-20" />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6 md:space-y-8">

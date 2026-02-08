@@ -3,6 +3,7 @@ import { Send, User, Sparkles, ChevronDown } from "lucide-react";
 import { campaignService, authService } from "../../services/index";
 import { useSocket } from "../../hooks/useSocket";
 import type { Campaign, ChatMessage } from "../../types/index";
+import { Skeleton } from "../../components/shared/index";
 
 export function StudioView() {
     const [messages, setMessages] = useState<ChatMessage[]>([

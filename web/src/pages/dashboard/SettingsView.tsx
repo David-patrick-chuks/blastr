@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Shield, Key, Bell, Loader2 } from "lucide-react";
 import { InfoModal } from "../../components/Modal";
 import { authService, apiClient } from "../../services/index";
+import { Skeleton } from "../../components/shared/index";
 
 export function SettingsView() {
     const [loading, setLoading] = useState(true);
