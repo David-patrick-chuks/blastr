@@ -26,6 +26,9 @@ class EmailServiceClass {
                 user: config.user,
                 pass: config.pass,
             },
+            connectionTimeout: 15000,
+            greetingTimeout: 15000,
+            socketTimeout: 15000,
         });
     }
 

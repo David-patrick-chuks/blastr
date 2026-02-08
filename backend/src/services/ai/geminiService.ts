@@ -112,13 +112,10 @@ class GeminiServiceClass {
             const ai = this.getCurrentClient();
             const res = await ai.models.generateContent({
                 model: GEMINI_MODELS.FLASH_3,
-                contents: [{
-                    role: 'user',
-                    parts: [
-                        { inlineData: { data: base64Image, mimeType: 'image/png' } },
-                        { text: prompt }
-                    ]
-                }],
+                contents: [
+                    { inlineData: { data: base64Image, mimeType: 'image/png' } },
+                    { text: prompt }
+                ],
                 config: {
                     mediaResolution: 'HIGH'
                 } as any

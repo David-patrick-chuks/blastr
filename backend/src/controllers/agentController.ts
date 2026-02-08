@@ -145,6 +145,9 @@ export const verifyAgent = async (req: AuthRequest, res: Response) => {
                 user: agent.smtp_user,
                 pass: agent.smtp_pass,
             },
+            connectionTimeout: 15000,
+            greetingTimeout: 15000,
+            socketTimeout: 15000,
         });
 
         await transporter.verify();
