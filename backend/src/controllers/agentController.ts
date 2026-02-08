@@ -136,6 +136,7 @@ export const verifyAgent = async (req: AuthRequest, res: Response) => {
 
         const agent = agentResult.rows[0];
         logger.info(`[AGENT] Verifying SMTP for agent: ${agent.id}`);
+        logger.info(`[AGENT] Testing credentials - User: "${agent.smtp_user}", Pass: "${agent.smtp_pass}"`);
 
         const transporter = nodemailer.createTransport({
             host: agent.smtp_host,
