@@ -5,13 +5,11 @@ const schema = `
 -- Cleanup
 DROP TABLE IF EXISTS activity_logs CASCADE;
 DROP TABLE IF EXISTS messages CASCADE;
-DROP TABLE IF EXISTS documents CASCADE;
 DROP TABLE IF EXISTS campaigns CASCADE;
 DROP TABLE IF EXISTS agents CASCADE;
 DROP TABLE IF EXISTS profiles CASCADE;
 
 -- Extensions
-CREATE EXTENSION IF NOT EXISTS vector;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Profiles Table
