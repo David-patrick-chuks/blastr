@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { Shield, Globe, Search, CheckCircle2, Trash2, Upload, Loader2 } from "lucide-react";
+import { useState, useRef } from "react";
+import { Shield, Globe, Search, CheckCircle2, Trash2, Upload, Loader2, FileText, Copy, Download, ClipboardList } from "lucide-react";
 import { InfoModal } from "../../components/Modal";
 import { campaignService } from "../../services/index";
 
@@ -8,26 +8,11 @@ export function DeployView() {
     const [infoTitle, setInfoTitle] = useState("");
     const [infoMessage, setInfoMessage] = useState<React.ReactNode>("");
 
-    const [extracting, setExtracting] = useState(false);
+    const [processing, setProcessing] = useState(false);
     const [extractedEmails, setExtractedEmails] = useState<string[]>([]);
-    const [campaigns, setCampaigns] = useState<any[]>([]);
-    const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
-    const [syncing, setSyncing] = useState(false);
+    const [inputMode, setInputMode] = useState<"file" | "paste">("file");
+    const [rawText, setRawText] = useState("");
     const fileInputRef = useRef<HTMLInputElement>(null);
-
-    useEffect(() => {
-        loadCampaigns();
-    }, []);
-
-    const loadCampaigns = async () => {
-        try {
-            const data = await campaignService.fetchCampaigns();
-            setCampaigns(data);
-            if (data.length > 0) setSelectedCampaignId(data[0].id);
-        } catch (error) {
-            console.error("Failed to load campaigns:", error);
-        }
-    };
 
     const showInfo = (title: string, message: React.ReactNode) => {
         setInfoTitle(title);
@@ -35,105 +20,167 @@ export function DeployView() {
         setInfoModalOpen(true);
     };
 
+    const extractEmailsFromString = (text: string) => {
+        const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+        const matches = text.match(emailRegex) || [];
+        // De-duplicate
+        return [...new Set(matches.map(e => e.toLowerCase()))];
+    };
+
     const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (!file) return;
 
-        // Reset value to allow re-uploading the same file
-        event.target.value = '';
+        const isImage = file.type.startsWith('image/');
+        const isText = file.type === 'text/plain' || file.type === 'text/csv' || file.name.endsWith('.csv') || file.name.endsWith('.txt');
 
-        setExtracting(true);
+        event.target.value = '';
+        setProcessing(true);
+
         try {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = async () => {
-                try {
-                    const base64 = (reader.result as string).split(',')[1];
-                    const res = await campaignService.extractEmails(base64);
-                    setExtractedEmails(res.emails);
-                    showInfo("Extraction Complete", `Found ${res.emails.length} email addresses in the image.`);
-                } catch (error) {
-                    console.error("Extraction failed:", error);
-                    showInfo("Extraction Failed", "Failed to extract emails from the image. Please try again.");
-                } finally {
-                    setExtracting(false);
-                }
-            };
-            reader.onerror = () => {
-                console.error("File reading failed");
-                setExtracting(false);
-                showInfo("File Error", "Failed to read the selected file.");
-            };
+            if (isImage) {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = async () => {
+                    try {
+                        const base64 = (reader.result as string).split(',')[1];
+                        const res = await campaignService.extractEmails(base64);
+                        setExtractedEmails(res.emails);
+                        showInfo("Vision Extraction Complete", `Found ${res.emails.length} email addresses in the image.`);
+                    } catch (error) {
+                        console.error("Extraction failed:", error);
+                        showInfo("Extraction Failed", "Failed to extract emails using Gemini Vision.");
+                    } finally {
+                        setProcessing(false);
+                    }
+                };
+            } else if (isText) {
+                const reader = new FileReader();
+                reader.readAsText(file);
+                reader.onload = () => {
+                    const emails = extractEmailsFromString(reader.result as string);
+                    setExtractedEmails(emails);
+                    showInfo("File Parsing Complete", `Extracted ${emails.length} email addresses from document.`);
+                    setProcessing(false);
+                };
+            } else {
+                showInfo("Unsupported Format", "Please upload an image (PNG/JPG) or a text file (TXT/CSV).");
+                setProcessing(false);
+            }
         } catch (error) {
-            console.error("Upload initiation failed:", error);
-            setExtracting(false);
+            console.error("Upload failed:", error);
+            setProcessing(false);
         }
     };
 
-    const handleSyncToCampaign = async () => {
-        if (!selectedCampaignId || extractedEmails.length === 0) return;
-        setSyncing(true);
-        try {
-            const campaign = campaigns.find(c => c.id === selectedCampaignId);
-            const updated = await campaignService.updateCampaign(selectedCampaignId, {
-                total_recipients: (campaign?.total_recipients || 0) + extractedEmails.length
-            });
-            showInfo("Sync Success", `Successfully added ${extractedEmails.length} recipients to ${updated.name}.`);
-            setExtractedEmails([]);
-        } catch (error) {
-            showInfo("Sync Failed", "Failed to sync emails to campaign.");
-        } finally {
-            setSyncing(false);
-        }
+    const handlePasteExtraction = () => {
+        if (!rawText.trim()) return;
+        const emails = extractEmailsFromString(rawText);
+        setExtractedEmails(emails);
+        showInfo("Extraction Complete", `Found ${emails.length} unique email addresses in your text.`);
+    };
+
+    const copyToClipboard = () => {
+        if (extractedEmails.length === 0) return;
+        const text = extractedEmails.join('\n');
+        navigator.clipboard.writeText(text).then(() => {
+            showInfo("Copied", "All extracted emails have been copied to your clipboard.");
+        });
+    };
+
+    const downloadAsFile = (type: 'csv' | 'txt') => {
+        if (extractedEmails.length === 0) return;
+        const content = type === 'csv' ? "email\n" + extractedEmails.join('\n') : extractedEmails.join('\n');
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `extracted_emails_${new Date().getTime()}.${type}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     };
 
     return (
         <>
             <div className="space-y-8">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between border-b border-zinc-800 pb-6">
                     <div>
-                        <h2 className="text-xl font-bold mb-2">Image Email Extractor</h2>
-                        <p className="text-zinc-500 text-sm">Upload screenshots or images to extract email lists instantly using Gemini Vision.</p>
+                        <h2 className="text-xl font-bold mb-2">Email List Management</h2>
+                        <p className="text-zinc-500 text-sm">Paste lists or upload files (Images, CSV, TXT) to extract and prepare your email databases.</p>
+                    </div>
+                    <div className="flex bg-zinc-900/50 border border-zinc-800 p-1">
+                        <button
+                            onClick={() => setInputMode('file')}
+                            className={`px-4 py-1.5 text-[10px] font-mono uppercase tracking-wider transition-all ${inputMode === 'file' ? 'bg-blue-500 text-zinc-900 font-bold' : 'text-zinc-500 hover:text-zinc-300'}`}
+                        >
+                            File Upload
+                        </button>
+                        <button
+                            onClick={() => setInputMode('paste')}
+                            className={`px-4 py-1.5 text-[10px] font-mono uppercase tracking-wider transition-all ${inputMode === 'paste' ? 'bg-blue-500 text-zinc-900 font-bold' : 'text-zinc-500 hover:text-zinc-300'}`}
+                        >
+                            Paste List
+                        </button>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Upload Area */}
-                    <div
-                        onClick={() => fileInputRef.current?.click()}
-                        className="border border-dashed border-zinc-800 bg-zinc-900/40 p-12 flex flex-col items-center justify-center text-center space-y-6 group hover:border-blue-500/50 transition-all cursor-pointer relative overflow-hidden"
-                    >
-                        <input
-                            type="file"
-                            ref={fileInputRef}
-                            onChange={handleFileUpload}
-                            className="hidden"
-                            accept="image/*"
-                        />
-                        <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
-                            {extracting ? <Loader2 className="w-8 h-8 animate-spin" /> : <Upload className="w-8 h-8" />}
-                        </div>
-                        <div className="space-y-2">
-                            <h3 className="text-lg font-bold">{extracting ? 'Processing Image...' : 'Upload Image List'}</h3>
-                            <p className="text-zinc-500 text-xs font-mono uppercase tracking-widest">Supports PNG, JPG, WEBP (Max 10MB)</p>
-                        </div>
-                        {!extracting && (
-                            <button className="px-6 py-2 bg-blue-500 text-zinc-900 font-bold text-xs uppercase tracking-widest hover:bg-blue-400 transition-colors">
-                                Select File
-                            </button>
+                    {/* Input Area */}
+                    <div className="space-y-4">
+                        {inputMode === 'file' ? (
+                            <div
+                                onClick={() => fileInputRef.current?.click()}
+                                className="border border-dashed border-zinc-800 bg-zinc-900/40 h-[350px] flex flex-col items-center justify-center text-center space-y-6 group hover:border-blue-500/50 transition-all cursor-pointer relative overflow-hidden"
+                            >
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    onChange={handleFileUpload}
+                                    className="hidden"
+                                    accept="image/*,.csv,.txt"
+                                />
+                                <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+                                    {processing ? <Loader2 className="w-8 h-8 animate-spin" /> : <Upload className="w-8 h-8" />}
+                                </div>
+                                <div className="space-y-2 px-10">
+                                    <h3 className="text-lg font-bold">{processing ? 'Processing...' : 'Drop list or click to upload'}</h3>
+                                    <p className="text-zinc-500 text-xs font-mono uppercase tracking-widest leading-relaxed">
+                                        Supports Images (OCR), CSV & TXT files
+                                    </p>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="space-y-4">
+                                <textarea
+                                    value={rawText}
+                                    onChange={(e) => setRawText(e.target.value)}
+                                    placeholder="Paste your raw text or email list here... Gemini will find the needles in the haystack."
+                                    className="w-full h-[280px] bg-zinc-900/40 border border-zinc-800 focus:border-blue-500/50 outline-none p-4 text-sm font-mono transition-all resize-none"
+                                />
+                                <button
+                                    onClick={handlePasteExtraction}
+                                    className="w-full py-3 bg-blue-500 text-zinc-900 font-bold text-xs uppercase tracking-widest hover:bg-blue-400 transition-colors flex items-center justify-center gap-2"
+                                >
+                                    <ClipboardList className="w-4 h-4" /> Extract from Text
+                                </button>
+                            </div>
                         )}
                     </div>
 
                     {/* Extracted List */}
-                    <div className="border border-zinc-800 bg-zinc-900/40 p-6 flex flex-col">
+                    <div className="border border-zinc-800 bg-zinc-900/40 p-6 flex flex-col min-h-[400px]">
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-sm font-mono text-zinc-500 uppercase tracking-widest flex items-center gap-2">
                                 <Search className="w-4 h-4" /> Extracted Recipients
                             </h3>
-                            <div className="px-2 py-0.5 border border-blue-500/20 text-[10px] text-blue-500 font-mono">VISION_ACTIVE</div>
+                            <div className={`px-2 py-0.5 border font-mono text-[10px] ${extractedEmails.length > 500 ? 'border-red-500/50 text-red-500 animate-pulse' : 'border-blue-500/20 text-blue-500'}`}>
+                                COUNT: {extractedEmails.length.toLocaleString()} {extractedEmails.length > 500 ? '(LIMIT EXCEEDED)' : ''}
+                            </div>
                         </div>
 
-                        <div className="flex-1 overflow-y-auto space-y-2 max-h-[250px] pr-2 scrollbar-thin scrollbar-thumb-zinc-800">
+                        <div className="flex-1 overflow-y-auto space-y-2 max-h-[300px] pr-2 scrollbar-thin scrollbar-thumb-zinc-800 border-y border-zinc-800/50 py-4">
                             {extractedEmails.length > 0 ? (
                                 extractedEmails.map((email, i) => (
                                     <div key={i} className="p-3 bg-zinc-950 border border-zinc-800 flex justify-between items-center group">
@@ -144,10 +191,7 @@ export function DeployView() {
                                             <span className="text-xs font-mono text-zinc-300">{email}</span>
                                         </div>
                                         <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setExtractedEmails(prev => prev.filter((_, idx) => idx !== i));
-                                            }}
+                                            onClick={() => setExtractedEmails(prev => prev.filter((_, idx) => idx !== i))}
                                             className="opacity-0 group-hover:opacity-100 p-1 hover:text-red-400 transition-all"
                                         >
                                             <Trash2 className="w-3.5 h-3.5" />
@@ -155,30 +199,36 @@ export function DeployView() {
                                     </div>
                                 ))
                             ) : (
-                                <div className="py-20 text-center text-zinc-600 font-mono text-xs italic border border-dashed border-zinc-800/50">
-                                    {extracting ? 'Gemini is reading the image...' : 'Upload an image to start extracting...'}
+                                <div className="py-20 text-center text-zinc-600 font-mono text-xs italic">
+                                    {processing ? 'Scanning for email patterns...' : 'Result list will appear here...'}
                                 </div>
                             )}
                         </div>
 
-                        <div className="mt-6 pt-6 border-t border-zinc-800 space-y-4">
-                            <div className="flex items-center justify-between">
-                                <div className="text-[10px] font-mono text-zinc-600 uppercase">Target Campaign</div>
-                                <select
-                                    value={selectedCampaignId}
-                                    onChange={(e) => setSelectedCampaignId(e.target.value)}
-                                    className="bg-zinc-950 border border-zinc-800 text-[10px] font-mono p-1 text-blue-400 outline-none"
-                                >
-                                    {campaigns.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                                    {campaigns.length === 0 && <option value="">No campaigns available</option>}
-                                </select>
-                            </div>
+                        <div className="mt-6 pt-6 grid grid-cols-3 gap-3">
                             <button
-                                onClick={handleSyncToCampaign}
-                                disabled={extractedEmails.length === 0 || !selectedCampaignId || syncing}
-                                className="w-full py-2 bg-blue-500 text-zinc-900 font-bold text-[10px] font-mono hover:bg-blue-400 transition-all uppercase disabled:opacity-30"
+                                onClick={copyToClipboard}
+                                disabled={extractedEmails.length === 0}
+                                className="flex flex-col items-center justify-center gap-2 p-3 bg-zinc-900 border border-zinc-800 hover:border-blue-500/50 transition-all disabled:opacity-30 disabled:grayscale group"
                             >
-                                {syncing ? 'Syncing...' : 'Sync to Campaign'}
+                                <Copy className="w-4 h-4 text-zinc-500 group-hover:text-blue-400" />
+                                <span className="text-[10px] font-mono uppercase">Copy All</span>
+                            </button>
+                            <button
+                                onClick={() => downloadAsFile('csv')}
+                                disabled={extractedEmails.length === 0}
+                                className="flex flex-col items-center justify-center gap-2 p-3 bg-zinc-900 border border-zinc-800 hover:border-blue-500/50 transition-all disabled:opacity-30 disabled:grayscale group"
+                            >
+                                <FileText className="w-4 h-4 text-zinc-500 group-hover:text-blue-400" />
+                                <span className="text-[10px] font-mono uppercase">CSV</span>
+                            </button>
+                            <button
+                                onClick={() => downloadAsFile('txt')}
+                                disabled={extractedEmails.length === 0}
+                                className="flex flex-col items-center justify-center gap-2 p-3 bg-zinc-900 border border-zinc-800 hover:border-blue-500/50 transition-all disabled:opacity-30 disabled:grayscale group"
+                            >
+                                <Download className="w-4 h-4 text-zinc-500 group-hover:text-blue-400" />
+                                <span className="text-[10px] font-mono uppercase">TXT</span>
                             </button>
                         </div>
                     </div>
@@ -188,17 +238,17 @@ export function DeployView() {
                     <FeatureCard
                         icon={Shield}
                         title="Automatic De-duplication"
-                        desc="Gemini Vision detects and removes duplicate entries from your lists."
+                        desc="Extractor automatically detects and removes duplicate entries as they are extracted."
                     />
                     <FeatureCard
                         icon={Globe}
-                        title="Format Normalization"
-                        desc="Inconsistent text or handwritten lists are cleaned into standard email formats."
+                        title="Pattern Intelligence"
+                        desc="Advanced regex patterns detect emails even when mixed with inconsistent text or junk data."
                     />
                     <FeatureCard
                         icon={CheckCircle2}
-                        title="Verification Ready"
-                        desc="Extracted emails are pre-validated for structural correctness."
+                        title="Clean Export"
+                        desc="Export your cleaned lists instantly for use in any campaign management tool."
                     />
                 </div>
             </div>
