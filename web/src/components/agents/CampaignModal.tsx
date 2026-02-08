@@ -103,7 +103,7 @@ export function CampaignModal({ isOpen, onClose, onSave, agent: campaign }: { is
                         required
                         value={formData.system_instruction}
                         onChange={(e) => setFormData({ ...formData, system_instruction: e.target.value })}
-                        placeholder="Hi {{name}}, We have something special for you..."
+                        placeholder="Hi, We have something special for you..."
                         className="w-full h-40 bg-zinc-950 border border-zinc-800 focus:border-blue-500/50 outline-none p-4 text-sm resize-none transition-all font-mono"
                     />
                     <p className="text-[10px] text-zinc-600 italic">This will be the base for AI personalization. Use brackets like {'{{name}}'} for variables.</p>

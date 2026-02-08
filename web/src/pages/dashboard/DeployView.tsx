@@ -39,22 +39,34 @@ export function DeployView() {
         const file = event.target.files?.[0];
         if (!file) return;
 
+        // Reset value to allow re-uploading the same file
+        event.target.value = '';
+
         setExtracting(true);
         try {
-            // Convert to base64
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = async () => {
-                const base64 = (reader.result as string).split(',')[1];
-                const res = await campaignService.extractEmails(base64);
-                setExtractedEmails(res.emails);
+                try {
+                    const base64 = (reader.result as string).split(',')[1];
+                    const res = await campaignService.extractEmails(base64);
+                    setExtractedEmails(res.emails);
+                    showInfo("Extraction Complete", `Found ${res.emails.length} email addresses in the image.`);
+                } catch (error) {
+                    console.error("Extraction failed:", error);
+                    showInfo("Extraction Failed", "Failed to extract emails from the image. Please try again.");
+                } finally {
+                    setExtracting(false);
+                }
+            };
+            reader.onerror = () => {
+                console.error("File reading failed");
                 setExtracting(false);
-                showInfo("Extraction Complete", `Found ${res.emails.length} email addresses in the image.`);
+                showInfo("File Error", "Failed to read the selected file.");
             };
         } catch (error) {
-            console.error("Extraction failed:", error);
+            console.error("Upload initiation failed:", error);
             setExtracting(false);
-            showInfo("Extraction Failed", "Failed to extract emails from the image. Please try again.");
         }
     };
 
