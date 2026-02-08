@@ -83,6 +83,16 @@ CREATE TABLE IF NOT EXISTS activity_logs (
     details TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Recipients Table
+CREATE TABLE IF NOT EXISTS recipients (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    campaign_id UUID REFERENCES campaigns(id) ON DELETE CASCADE,
+    email TEXT NOT NULL,
+    status TEXT DEFAULT 'Pending', -- Pending, Sent, Failed
+    metadata JSONB DEFAULT '{}',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
 `;
 
 export const initDb = async () => {

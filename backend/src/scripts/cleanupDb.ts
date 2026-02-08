@@ -3,6 +3,7 @@ import { logger } from '../utils/logger.js';
 
 const cleanupScript = `
 -- Truncate all data tables
+TRUNCATE TABLE recipients CASCADE;
 TRUNCATE TABLE activity_logs CASCADE;
 TRUNCATE TABLE messages CASCADE;
 TRUNCATE TABLE campaigns CASCADE;

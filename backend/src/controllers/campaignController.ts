@@ -191,3 +191,63 @@ export const getCampaignStats = async (req: AuthRequest, res: Response) => {
         res.status(500).json({ error: 'Failed to fetch campaign stats' });
     }
 };
+
+export const addRecipients = async (req: AuthRequest, res: Response) => {
+    const userId = req.user?.id;
+    const { id } = req.params;
+    const { emails } = req.body;
+
+    try {
+        // Verify campaign ownership
+        const campaignCheck = await pool.query(
+            `SELECT id FROM campaigns WHERE id = $1 AND user_id = $2`,
+            [id, userId]
+        );
+
+        if (campaignCheck.rows.length === 0) {
+            return res.status(404).json({ error: 'Campaign not found' });
+        }
+
+        if (!emails || !Array.isArray(emails) || emails.length === 0) {
+            return res.status(400).json({ error: 'Emails array is required' });
+        }
+
+        // Parse and clean emails
+        const cleanedEmails = emails
+            .flatMap(email => email.split(/[,\n]+/))
+            .map(email => email.trim().toLowerCase())
+            .filter(email => email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+
+        if (cleanedEmails.length === 0) {
+            return res.status(400).json({ error: 'No valid email addresses found' });
+        }
+
+        // Remove duplicates
+        const uniqueEmails = [...new Set(cleanedEmails)];
+
+        // Bulk insert recipients
+        const values = uniqueEmails.map((email, idx) => `($1, $${idx + 2})`).join(', ');
+        const params = [id, ...uniqueEmails];
+
+        await pool.query(
+            `INSERT INTO recipients (campaign_id, email) VALUES ${values}`,
+            params
+        );
+
+        // Update campaign total_recipients count
+        await pool.query(
+            `UPDATE campaigns SET total_recipients = total_recipients + $1 WHERE id = $2`,
+            [uniqueEmails.length, id]
+        );
+
+        logger.info(`[CAMPAIGN] Added ${uniqueEmails.length} recipients to campaign: ${id}`);
+        res.json({
+            success: true,
+            added: uniqueEmails.length,
+            duplicates: cleanedEmails.length - uniqueEmails.length
+        });
+    } catch (error: any) {
+        logger.error('[CAMPAIGN] Add recipients error:', error.message || error);
+        res.status(500).json({ error: 'Failed to add recipients' });
+    }
+};
