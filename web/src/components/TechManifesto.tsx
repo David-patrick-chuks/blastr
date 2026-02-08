@@ -19,7 +19,7 @@ export function TechManifesto() {
                                 We prioritize low-latency execution and high-fidelity state management over generic chat interfaces.
                             </p>
                             <p>
-                                By leveraging <span className="text-blue-500/80">Gemini 3 Flash</span> and <span className="text-blue-500/80">PGVector</span>,
+                                By leveraging <span className="text-blue-500/80">Gemini 3 Flash</span>,
                                 we enable agents that can process documents, scan codebases, and interact across protocols—all while maintaining a
                                 rigorous security posture via our proprietary auth architecture.
                             </p>
@@ -54,8 +54,8 @@ export function TechManifesto() {
                                     {"  "}<span className="text-cyan-400">"security"</span>: <span className="text-blue-500">{"{"}</span> <br />
                                     {"    "}<span className="text-cyan-400">"auth"</span>: <span className="text-zinc-300">"Cross-Protocol-Gating"</span>, <br />
                                     {"    "}<span className="text-cyan-400">"encryption"</span>: <span className="text-zinc-300">"AES-256-GCM"</span> <br />
-                                    {"  "}<span className="text-blue-500">{"}"}</span>, <br />
-                                    {"  "}<span className="text-cyan-400">"rag_engine"</span>: <span className="text-zinc-300">"Hybrid-Source-Citation"</span> <br />
+                                    {"  "}<span className="text-blue-500">{"}"}</span>
+                                    <br />
                                     <span className="text-blue-500">{"}"}</span>
                                 </code>
                             </pre>
