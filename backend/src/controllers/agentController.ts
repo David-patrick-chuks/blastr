@@ -136,13 +136,13 @@ export const verifyAgent = async (req: AuthRequest, res: Response) => {
 
         const agent = agentResult.rows[0];
         logger.info(`[AGENT] Verifying SMTP for agent: ${agent.id}`);
-        logger.info(`[AGENT] Transport config - Host: ${agent.smtp_host}, Port: ${agent.smtp_port}, Secure: ${agent.smtp_secure}`);
-        logger.info(`[AGENT] Credentials - User: "${agent.smtp_user}", Pass: "${agent.smtp_pass}"`);
+        // Log basic config without sensitive credentials for privacy in production
+        logger.info(`[AGENT] Transport config - Host: ${agent.smtp_host}, Port: ${agent.smtp_port}`);
 
         const transporter = nodemailer.createTransport({
             host: agent.smtp_host,
             port: agent.smtp_port,
-            secure: agent.smtp_secure,
+            secure: agent.smtp_port === 465, // Force secure true only for SSL/TLS port 465
             auth: {
                 user: agent.smtp_user,
                 pass: agent.smtp_pass,
