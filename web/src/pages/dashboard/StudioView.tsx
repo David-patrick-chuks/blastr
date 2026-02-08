@@ -136,7 +136,11 @@ export function StudioView() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex flex-wrap items-center gap-4">
                     <h2 className="text-xl font-bold">AI Email Composer</h2>
-                    {campaigns.length > 0 ? (
+                    {!selectedCampaign && campaigns.length === 0 ? (
+                        <div className="flex items-center gap-2">
+                            <Skeleton width={120} height={24} />
+                        </div>
+                    ) : campaigns.length > 0 ? (
                         <div className="relative group">
                             <div className="flex items-center gap-2 h-8 px-3 border border-zinc-800 bg-zinc-900/60 text-xs font-mono text-zinc-400 cursor-pointer hover:border-zinc-700 transition-all">
                                 CAMPAIGN: <span className="text-blue-400">{selectedCampaign?.name || 'Select Campaign'}</span>

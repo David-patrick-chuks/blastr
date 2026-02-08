@@ -99,7 +99,34 @@ export function SettingsView() {
         setPreferences(prev => ({ ...prev, [key]: !prev[key] }));
     };
 
-    if (loading) return <div className="p-8 font-mono text-zinc-500 uppercase tracking-widest">Accessing preference layer...</div>;
+    if (loading) {
+        return (
+            <div className="max-w-4xl space-y-12">
+                <div>
+                    <Skeleton width={120} height={24} className="mb-2" />
+                    <Skeleton width={400} height={14} />
+                </div>
+                <div className="space-y-12">
+                    {[1, 2].map(i => (
+                        <div key={i} className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-8 border-b border-zinc-900/50">
+                            <div className="lg:col-span-1">
+                                <div className="flex items-center gap-3 mb-2">
+                                    <Skeleton width={32} height={32} />
+                                    <Skeleton width={150} height={18} />
+                                </div>
+                                <Skeleton width="100%" height={12} />
+                            </div>
+                            <div className="lg:col-span-2 space-y-4">
+                                <Skeleton width="100%" height={40} />
+                                <Skeleton width="100%" height={40} />
+                                <Skeleton width="100%" height={40} />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
 
     return (
         <>
