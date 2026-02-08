@@ -16,7 +16,10 @@ export function CampaignModal({ isOpen, onClose, onSave, agent: campaign }: { is
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
-        apiClient.get('/agents').then((res: any) => setBots(res));
+        apiClient.get('/agents').then((res: any) => {
+            const activeBots = res.filter((bot: any) => bot.status === 'active');
+            setBots(activeBots);
+        });
     }, []);
 
     useEffect(() => {
