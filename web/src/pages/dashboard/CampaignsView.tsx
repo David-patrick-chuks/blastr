@@ -54,19 +54,22 @@ export function CampaignsView() {
         setConfirmModalOpen(true);
     };
 
-    const handleSaveAgent = async (formData: Partial<Campaign>) => {
+    const handleSaveAgent = async (formData: Partial<Campaign>): Promise<Campaign> => {
         try {
             if (currentCampaign) {
                 const updated = await campaignService.updateCampaign(currentCampaign.id, formData) as Campaign;
                 setCampaigns(campaigns.map((c: Campaign) => c.id === updated.id ? updated : c));
                 showInfo("Success", "Campaign updated successfully.");
+                return updated;
             } else {
                 const created = await campaignService.createCampaign(formData) as Campaign;
                 setCampaigns([created, ...campaigns]);
                 showInfo("Success", "New campaign created successfully.");
+                return created;
             }
         } catch (error) {
             showInfo("Error", "Failed to save campaign configuration.");
+            throw error;
         }
     };
 

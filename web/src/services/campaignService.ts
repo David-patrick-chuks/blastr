@@ -24,5 +24,9 @@ export const campaignService = {
 
     async extractEmails(base64Image: string): Promise<{ emails: string[] }> {
         return apiClient.post('/ai/extract-emails', { image: base64Image });
+    },
+
+    async addRecipients(campaignId: string, emails: string[]): Promise<{ success: boolean; added: number; duplicates: number }> {
+        return apiClient.post(`/campaigns/${campaignId}/recipients`, { emails });
     }
 };

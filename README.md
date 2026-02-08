@@ -61,7 +61,7 @@ BLASTR utilizes the `GoogleGenAI` SDK for robust streaming and multimodal intera
 async *generateContentStream(prompt: string, options: any = {}) {
     const ai = this.getCurrentClient();
     const stream = await ai.models.generateContentStream({
-        model: GEMINI_MODELS.FLASH_1_5,
+        model: GEMINI_MODELS.FLASH_3,
         contents: this.formatContents(prompt),
         config: { temperature: 0.7 }
     });

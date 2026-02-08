@@ -82,28 +82,7 @@ export function BotModal({ isOpen, onClose, onSave, bot }: { isOpen: boolean, on
                     </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                        <label className="text-[10px] font-mono text-zinc-500 uppercase">SMTP Host</label>
-                        <input
-                            required
-                            type="text"
-                            value={formData.smtp_host}
-                            onChange={(e) => setFormData({ ...formData, smtp_host: e.target.value })}
-                            className="w-full bg-zinc-950 border border-zinc-800 focus:border-blue-500/50 outline-none px-4 py-2 text-sm transition-all"
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <label className="text-[10px] font-mono text-zinc-500 uppercase">SMTP Port</label>
-                        <input
-                            required
-                            type="number"
-                            value={formData.smtp_port}
-                            onChange={(e) => setFormData({ ...formData, smtp_port: parseInt(e.target.value) })}
-                            className="w-full bg-zinc-950 border border-zinc-800 focus:border-blue-500/50 outline-none px-4 py-2 text-sm transition-all"
-                        />
-                    </div>
-                </div>
+
 
                 <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -123,22 +102,13 @@ export function BotModal({ isOpen, onClose, onSave, bot }: { isOpen: boolean, on
                             type="password"
                             value={formData.smtp_pass}
                             placeholder="••••••••••••••••"
-                            onChange={(e) => setFormData({ ...formData, smtp_pass: e.target.value.replace(/\s/g, "") })}
+                            onChange={(e) => setFormData({ ...formData, smtp_pass: e.target.value.replace(/[\s"]/g, "") })}
                             className="w-full bg-zinc-950 border border-zinc-800 focus:border-blue-500/50 outline-none px-4 py-2 text-sm transition-all"
                         />
                     </div>
                 </div>
 
-                <div className="space-y-2">
-                    <label className="text-[10px] font-mono text-zinc-500 uppercase">Daily Sending Limit</label>
-                    <input
-                        required
-                        type="number"
-                        value={formData.daily_limit}
-                        onChange={(e) => setFormData({ ...formData, daily_limit: parseInt(e.target.value) })}
-                        className="w-full bg-zinc-950 border border-zinc-800 focus:border-blue-500/50 outline-none px-4 py-2 text-sm transition-all"
-                    />
-                </div>
+
 
                 <div className="flex justify-end gap-3 pt-4 border-t border-zinc-800">
                     <button
