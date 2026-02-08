@@ -10,7 +10,7 @@ export function BotModal({ isOpen, onClose, onSave, bot }: { isOpen: boolean, on
         smtp_port: 587,
         smtp_user: "",
         smtp_pass: "",
-        smtp_secure: true,
+        smtp_secure: false,
         daily_limit: 500
     });
     const [saving, setSaving] = useState(false);

@@ -83,7 +83,7 @@ export function CampaignsView() {
 
     const filteredCampaigns = campaigns.filter((campaign: Campaign) =>
         campaign.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        campaign.role.toLowerCase().includes(searchTerm.toLowerCase())
+        (campaign.role || "").toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const handleViewAgent = (campaign: Campaign) => {
@@ -164,7 +164,7 @@ export function CampaignsView() {
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="px-6 py-4 font-mono text-xs">{campaign.role.length > 30 ? campaign.role.substring(0, 30) + '...' : campaign.role}</td>
+                                            <td className="px-6 py-4 font-mono text-xs">{(campaign.role || "").length > 30 ? campaign.role.substring(0, 30) + '...' : (campaign.role || "N/A")}</td>
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center gap-2">
                                                     <div className={`w-1 h-1 rounded-full animate-pulse ${campaign.status === 'Active' ? 'bg-blue-400' : 'bg-amber-400'}`} />
