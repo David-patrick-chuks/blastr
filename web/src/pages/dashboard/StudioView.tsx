@@ -168,7 +168,7 @@ export function StudioView() {
                 </div>
             </div>
 
-            <div className="flex-1 flex gap-6 overflow-hidden">
+            <div className="flex-1 flex flex-col lg:flex-row gap-6 lg:overflow-hidden">
                 {/* Chat Area */}
                 <div className="flex-1 flex flex-col border border-zinc-800 bg-zinc-900/20 backdrop-blur rounded-sm">
                     <div className="flex-1 p-6 overflow-y-auto space-y-6">
@@ -221,7 +221,7 @@ export function StudioView() {
                 </div>
 
                 {/* Side Controls */}
-                <div className="w-80 space-y-4 overflow-y-auto pr-2">
+                <div className="w-full lg:w-80 space-y-4 lg:overflow-y-auto pb-4">
                     <div className="p-4 border border-zinc-800 bg-zinc-900/40">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-xs font-mono text-zinc-500 uppercase tracking-wider flex items-center gap-2">
