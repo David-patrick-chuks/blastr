@@ -112,7 +112,7 @@ export function BotModal({ isOpen, onClose, onSave, bot }: { isOpen: boolean, on
                             required
                             type="text"
                             value={formData.smtp_user}
-                            onChange={(e) => setFormData({ ...formData, smtp_user: e.target.value })}
+                            onChange={(e) => setFormData({ ...formData, smtp_user: e.target.value.replace(/\s/g, "") })}
                             className="w-full bg-zinc-950 border border-zinc-800 focus:border-blue-500/50 outline-none px-4 py-2 text-sm transition-all"
                         />
                     </div>
@@ -123,7 +123,7 @@ export function BotModal({ isOpen, onClose, onSave, bot }: { isOpen: boolean, on
                             type="password"
                             value={formData.smtp_pass}
                             placeholder="••••••••••••••••"
-                            onChange={(e) => setFormData({ ...formData, smtp_pass: e.target.value })}
+                            onChange={(e) => setFormData({ ...formData, smtp_pass: e.target.value.replace(/\s/g, "") })}
                             className="w-full bg-zinc-950 border border-zinc-800 focus:border-blue-500/50 outline-none px-4 py-2 text-sm transition-all"
                         />
                     </div>
