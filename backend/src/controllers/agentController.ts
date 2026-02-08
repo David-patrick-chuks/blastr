@@ -11,11 +11,15 @@ export const createAgent = async (req: AuthRequest, res: Response) => {
     try {
         logger.info(`[AGENT] Creating agent for user: ${userId}`);
 
+        const host = smtp_host || 'smtp.gmail.com';
+        const port = smtp_port || 587;
+        const limit = 500; // Fixed limit as requested
+
         const result = await pool.query(
-            `INSERT INTO agents (user_id, name, email, smtp_host, smtp_port, smtp_secure, smtp_user, smtp_pass, from_name, status)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'unverified')
+            `INSERT INTO agents (user_id, name, email, smtp_host, smtp_port, smtp_secure, smtp_user, smtp_pass, from_name, status, daily_limit)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'unverified', $10)
              RETURNING *`,
-            [userId, name, email, smtp_host, smtp_port, smtp_secure, smtp_user, smtp_pass, from_name]
+            [userId, name, email, host, port, smtp_secure !== undefined ? smtp_secure : (port === 465), smtp_user, smtp_pass, from_name, limit]
         );
 
         const agent = result.rows[0];
@@ -77,13 +81,16 @@ export const updateAgent = async (req: AuthRequest, res: Response) => {
     const { name, email, smtp_host, smtp_port, smtp_secure, smtp_user, smtp_pass, from_name } = req.body;
 
     try {
+        const host = smtp_host || 'smtp.gmail.com';
+        const port = smtp_port || 587;
+
         const result = await pool.query(
             `UPDATE agents 
              SET name = $1, email = $2, smtp_host = $3, smtp_port = $4, smtp_secure = $5, 
                  smtp_user = $6, smtp_pass = $7, from_name = $8, status = 'unverified', updated_at = CURRENT_TIMESTAMP
              WHERE id = $9 AND user_id = $10
              RETURNING *`,
-            [name, email, smtp_host, smtp_port, smtp_secure, smtp_user, smtp_pass, from_name, id, userId]
+            [name, email, host, port, smtp_secure !== undefined ? smtp_secure : (port === 465), smtp_user, smtp_pass, from_name, id, userId]
         );
 
         if (result.rows.length === 0) {

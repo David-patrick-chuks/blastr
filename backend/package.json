@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "tsx src/server.ts",
     "db:init": "npx tsx src/scripts/initDb.ts",
+    "db:cleanup": "npx tsx src/scripts/cleanupDb.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

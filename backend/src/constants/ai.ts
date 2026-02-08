@@ -1,6 +1,5 @@
 export const GEMINI_MODELS = {
-    FLASH_1_5: 'gemini-1.5-flash',
-    PRO: 'gemini-2.5-pro',
+    PRO: 'gemini-2.5-flash',
     FLASH_3: 'gemini-3-flash-preview',
 };
 

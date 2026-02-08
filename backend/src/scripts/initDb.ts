@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS agents (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID REFERENCES profiles(id),
     name TEXT NOT NULL,
-    email TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
     smtp_host TEXT NOT NULL,
     smtp_port INTEGER NOT NULL DEFAULT 587,
     smtp_secure BOOLEAN DEFAULT TRUE,

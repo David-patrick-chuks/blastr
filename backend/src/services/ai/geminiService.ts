@@ -56,7 +56,7 @@ class GeminiServiceClass {
             const contents = this.formatContents(prompt, options.history || []);
 
             const res = await ai.models.generateContent({
-                model: GEMINI_MODELS.FLASH_1_5,
+                model: GEMINI_MODELS.FLASH_3,
                 contents: contents,
                 config: {
                     systemInstruction: options.systemInstruction,
