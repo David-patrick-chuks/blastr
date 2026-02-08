@@ -117,7 +117,7 @@ class GeminiServiceClass {
                     { text: prompt }
                 ],
                 config: {
-                    mediaResolution: 'HIGH'
+                    mediaResolution: 'MEDIA_RESOLUTION_HIGH'
                 } as any
             });
 
